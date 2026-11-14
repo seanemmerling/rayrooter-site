@@ -73,7 +73,7 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head=""):
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="topbar"><div class="wrap">
-  <span>Trenchless no-dig sewer repair &middot; New York &amp; New Jersey</span>
+  <span>Trenchless no-dig sewer repair &middot; New Jersey &amp; New York</span>
   <span>{SITE['hours']} &middot; Licensed &amp; Insured</span>
 </div></div>
 <header class="site-header"><div class="wrap hdr">
@@ -172,7 +172,7 @@ def home():
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["hero"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google</p>
-  <h1>Trenchless No Dig Sewer Repair <span class="hl">in New York and New Jersey</span></h1>
+  <h1>Trenchless No Dig Sewer Repair in New Jersey and New York</h1>
   <p class="lead">Fix a broken, root-filled, or collapsing sewer line without digging up your yard, driveway, or basement. Usually done in a day, with camera video before and after.</p>
   <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="/trenchless/">How trenchless repair works</a></div>
   <ul class="trust">{trust}</ul>
@@ -223,8 +223,8 @@ def home():
   </div>
 </div></section>
 '''
-    return layout("/", "Trenchless No Dig Sewer Repair in New York & New Jersey | Ray Rooter Trenchless",
-                  "Trenchless no-dig sewer repair, pipe lining, hydro jetting, and sewer camera inspections in New York and New Jersey. Fix your sewer line without digging up your yard. Free estimates.", body, "/")
+    return layout("/", "Trenchless No Dig Sewer Repair in New Jersey & New York | Ray Rooter Trenchless",
+                  "Trenchless no-dig sewer repair, pipe lining, hydro jetting, and sewer camera inspections in New Jersey and New York. Fix your sewer line without digging up your yard. Free estimates.", body, "/")
 
 def render_body(blocks):
     out = []
@@ -299,14 +299,14 @@ def trenchless_page():
                   "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in T["faq"]]}
     svc_schema = {"@context": "https://schema.org", "@type": "Service", "serviceType": "Trenchless sewer repair",
                   "name": "Trenchless No Dig Sewer Repair", "provider": {"@type": "HomeAndConstructionBusiness", "name": SITE["name"], "telephone": "+1-" + SITE["phone"]},
-                  "areaServed": ["New Jersey", "New York"]}
+                  "areaServed": ["Northern New Jersey", "New York City"]}
     head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
     trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No trench through your property", "Usually done in a day", "10-year liner warranty", "Free estimates"])
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["basement_rig"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google &middot; {SITE["review_count"]} reviews</p>
   <h1>Trenchless No Dig Sewer Repair</h1>
-  <p class="lead">We fix cracked, root-filled, and broken sewer lines from the inside, without tearing up your lawn, driveway, or finished basement. Serving New York and New Jersey.</p>
+  <p class="lead">We fix cracked, root-filled, and broken sewer lines from the inside, without tearing up your lawn, driveway, or finished basement. Serving northern New Jersey and the surrounding New York City boroughs.</p>
   <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="{SITE["sms_href"]}">{icon("sms")}<span>Text us photos</span></a></div>
   <ul class="trust">{trust}</ul>
 </div></section>

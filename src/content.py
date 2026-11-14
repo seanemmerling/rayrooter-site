@@ -11,7 +11,7 @@ SITE = {
     "base_town": "Midland Park, NJ",
     "counties": ["Bergen", "Hudson", "Essex", "Morris", "Passaic"],
     "area_line": "Bergen, Hudson, Essex, Morris, and Passaic County",
-    "region": "New York and New Jersey",
+    "region": "New Jersey and New York",
     "google_reviews_url": "https://maps.google.com/?cid=5373159156397854594",
     "review_count": 55,
     "rating": "4.9",
@@ -285,8 +285,8 @@ SERVICES.sort(key=lambda s: _PRIORITY.index(s["path"]))
 
 # Dedicated landing page at /trenchless/
 TRENCHLESS = {
-    "seo_title": "Trenchless No Dig Sewer Repair in New York & New Jersey | Ray Rooter Trenchless",
-    "desc": "No-dig trenchless sewer repair and pipe lining in New York and New Jersey. Fix roots, cracks, and broken sewer lines without digging up your yard, driveway, or basement. Free estimates.",
+    "seo_title": "Trenchless No Dig Sewer Repair in New Jersey & New York | Ray Rooter Trenchless",
+    "desc": "No-dig trenchless sewer repair and pipe lining in New Jersey and New York. Fix roots, cracks, and broken sewer lines without digging up your yard, driveway, or basement. Free estimates.",
     "signs": ["Sewage backing up into the basement or a floor drain",
               "More than one drain slow or gurgling at the same time",
               "Recurring clogs that come back after snaking",
@@ -313,7 +313,7 @@ TRENCHLESS = {
         ("Do you work with homeowners insurance?",
          "We can provide the camera footage and documentation your insurance company asks for when you file a claim."),
         ("What areas do you serve?",
-         "New Jersey's Bergen, Hudson, Essex, Morris, and Passaic Counties, plus New York. Call with your address and we'll confirm."),
+         "Northern New Jersey, including Bergen, Hudson, Essex, Morris, and Passaic Counties, and the surrounding New York City boroughs. Call with your address and we'll confirm."),
     ],
     "review_names": ["menthe alow", "Kenneth Hughes", "Andrew Melikov", "Kirk Prichard", "Teresa Yi-Bourdett", "John Caruso"],
 }

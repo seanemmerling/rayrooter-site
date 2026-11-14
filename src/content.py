@@ -11,6 +11,7 @@ SITE = {
     "base_town": "Midland Park, NJ",
     "counties": ["Bergen", "Hudson", "Essex", "Morris", "Passaic"],
     "area_line": "Bergen, Hudson, Essex, Morris, and Passaic County",
+    "region": "New York and New Jersey",
     "google_reviews_url": "https://maps.google.com/?cid=5373159156397854594",
     "review_count": 55,
     "rating": "4.9",
@@ -41,6 +42,8 @@ FEATURED_REVIEWERS = ["menthe alow", "Andrea Plitch", "Kenneth Hughes", "Kirk Pr
 SERVICES = [
     {
         "path": "/services/pipelining/",
+        "card_href": "/trenchless/",
+        "canonical": "/trenchless/",
         "nav": "Trenchless Sewer Repair",
         "title": "Trenchless Sewer Line Repair & Pipelining",
         "seo_title": "Trenchless Sewer Repair & Pipelining in North NJ | Ray Rooter Trenchless",
@@ -272,4 +275,45 @@ REDIRECTS = {
     "/lightbox/": "/",
     "/full-width/": "/",
     "/no-filter/": "/",
+}
+
+# Sales priority: trenchless first, then hydro jetting and sewer camera work.
+_PRIORITY = ["/services/pipelining/", "/services/high-pressure-sewer-jetting/", "/services/sewer-line-camera/",
+             "/services/trenchless-water-line-replacement/", "/services/drain-cleaning-repairs/",
+             "/services/gas-line-services/", "/services/heating-boilers-hot-water-heater/"]
+SERVICES.sort(key=lambda s: _PRIORITY.index(s["path"]))
+
+# Dedicated landing page at /trenchless/
+TRENCHLESS = {
+    "seo_title": "Trenchless No Dig Sewer Repair in New York & New Jersey | Ray Rooter Trenchless",
+    "desc": "No-dig trenchless sewer repair and pipe lining in New York and New Jersey. Fix roots, cracks, and broken sewer lines without digging up your yard, driveway, or basement. Free estimates.",
+    "signs": ["Sewage backing up into the basement or a floor drain",
+              "More than one drain slow or gurgling at the same time",
+              "Recurring clogs that come back after snaking",
+              "Tree roots found in the line",
+              "Sewer odor in the basement or yard",
+              "A home inspection or camera scope that flagged a cracked or broken line"],
+    "fixes": ["Tree root intrusion", "Cracked or broken cast iron and clay pipe",
+              "Pipe rotted out along the bottom", "Separated or offset joints",
+              "Lines under finished basements, driveways, patios, and trees",
+              "Laterals running under the sidewalk or street"],
+    "faq": [
+        ("What is trenchless sewer repair?",
+         "Instead of digging a trench to replace a damaged sewer line, we repair it from the inside. A resin-saturated liner is pulled into the old pipe through a cleanout and cured in place, creating a new, seamless pipe inside the old one. It's also called no-dig sewer repair, pipe lining, or CIPP (cured-in-place pipe)."),
+        ("How long does it take?",
+         "Most trenchless repairs are done in a day. Longer or more complicated lines can take two: one day to clean and measure, one day to install and cure the liner."),
+        ("How long does a liner last?",
+         "The liners we install carry a 10-year manufacturer's warranty and are designed to last 50 years. Because the new pipe has no joints, roots have nowhere to get back in."),
+        ("Will you have to dig at all?",
+         "Usually not. We work through an existing cleanout. If there's no usable cleanout, we may install one, which is a small, contained excavation, not a trench across your property."),
+        ("Can every sewer line be fixed without digging?",
+         "Not always. A fully collapsed pipe or a severe sag can need a spot excavation. That's why every job starts with a camera inspection, so you know exactly what you're dealing with before you get a price."),
+        ("How much does it cost?",
+         "It depends on the length and size of the line, access, and its condition, so we quote after a camera inspection. Estimates are free. For comparison, digging up and replacing a sewer line in North Jersey commonly runs anywhere from $5,000 to $50,000 once restoration is included."),
+        ("Do you work with homeowners insurance?",
+         "We can provide the camera footage and documentation your insurance company asks for when you file a claim."),
+        ("What areas do you serve?",
+         "New Jersey's Bergen, Hudson, Essex, Morris, and Passaic Counties, plus New York. Call with your address and we'll confirm."),
+    ],
+    "review_names": ["menthe alow", "Kenneth Hughes", "Andrew Melikov", "Kirk Prichard", "Teresa Yi-Bourdett", "John Caruso"],
 }

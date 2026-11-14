@@ -222,3 +222,15 @@ body.menu-open .mobile-call{display:none}
 .masonry{columns:3 320px;column-gap:22px}
 .masonry .review{break-inside:avoid;margin:0 0 22px;display:block}
 .small-note{color:var(--muted);font-size:.85rem}
+
+.faq{background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 0 12px;padding:0 22px}
+.faq summary{cursor:pointer;font-weight:600;padding:18px 0;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--orange);font-size:1.4rem;line-height:1}
+.faq[open] summary::after{content:"\2212"}
+.faq p{margin:0 0 18px;color:var(--ink-2)}
+.narrow-wrap{max-width:820px}
+.steps-dark .step{background:#15181D;border:1px solid #262A31}
+.steps-dark .step h3{color:#fff}.steps-dark .step p{color:#A9B0BA}
+.steps-dark .step .num{background:var(--orange)}
+.prose a{color:var(--orange-d)}

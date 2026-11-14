@@ -1,7 +1,7 @@
 """Builds the static site into public/. Run: python3 src/build.py"""
 import html, json, pathlib, shutil, sys
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from content import SITE, IMAGES, REVIEWS, REVIEWS_CAPTURED, FEATURED_REVIEWERS, SERVICES, CITIES, COUNTIES, REDIRECTS
+from content import TRENCHLESS, SITE, IMAGES, REVIEWS, REVIEWS_CAPTURED, FEATURED_REVIEWERS, SERVICES, CITIES, COUNTIES, REDIRECTS
 import re, datetime
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -31,7 +31,7 @@ def stars(n=5):
 def call_btn(cls="btn btn-primary", label=None):
     return f'<a class="{cls}" href="{SITE["phone_href"]}">{icon("phone")}<span>{label or "Call " + SITE["phone"]}</span></a>'
 
-NAV = [("/", "Home"), ("/services/", "Services"), ("/service-areas/", "Service Areas"), ("/clients-one/", "Reviews"), ("/about-us/", "About"), ("/contact-us/", "Contact")]
+NAV = [("/", "Home"), ("/trenchless/", "Trenchless"), ("/services/", "Services"), ("/service-areas/", "Service Areas"), ("/clients-one/", "Reviews"), ("/about-us/", "About"), ("/contact-us/", "Contact")]
 
 def schema():
     return {
@@ -48,9 +48,9 @@ def schema():
         "sameAs": [SITE["google_reviews_url"]],
     }
 
-def layout(path, title, desc, body, active="/"):
+def layout(path, title, desc, body, active="/", canonical=None, extra_head=""):
     nav = "".join(f'<a href="{h}"{" aria-current=page" if h == active else ""}>{t}</a>' for h, t in NAV)
-    svc_links = "".join(f'<li><a href="{s["path"]}">{e(s["nav"])}</a></li>' for s in SERVICES[:5])
+    svc_links = "".join(f'<li><a href="{href(s)}">{e(s["nav"])}</a></li>' for s in SERVICES[:5])
     area_links = "".join(f'<li><a href="/service-areas/{c["slug"]}/">{e(c["name"])}</a></li>' for c in COUNTIES)
     return f"""<!doctype html>
 <html lang="en">
@@ -59,7 +59,7 @@ def layout(path, title, desc, body, active="/"):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
-<link rel="canonical" href="{SITE['domain']}{path}">
+<link rel="canonical" href="{SITE['domain']}{canonical or path}">{extra_head}
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:image" content="{SITE['domain']}{IMAGES['og']}">
@@ -117,8 +117,11 @@ document.addEventListener('keydown',function(e){{if(e.key==='Escape'&&n.classLis
 </html>
 """
 
+def href(s):
+    return s.get("card_href", s["path"])
+
 def service_card(s):
-    return f'''<a class="card svc" href="{s["path"]}">
+    return f'''<a class="card svc" href="{href(s)}">
   <span class="svc-ic">{icon(s["icon"])}</span>
   <h3>{e(s["nav"])}</h3><p>{e(s["summary"])}</p><span class="more">Learn more &rarr;</span>
 </a>'''
@@ -164,20 +167,20 @@ def home():
              ("3", "Fix it without digging", "We reline or replace the pipe from small access points, usually in a day."),
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
     steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
-    core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="{SITE["phone_href"]}"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Call {SITE["phone"]} &rarr;</span></a>'''
+    core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="/services/sewer-line-camera/"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a sewer camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Book a camera inspection &rarr;</span></a>'''
     areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES)
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["hero"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google</p>
-  <h1>Sewer &amp; water lines fixed <span class="hl">without digging up your yard.</span></h1>
-  <p class="lead">Trenchless sewer repair, pipelining, hydro jetting, camera inspections, and water line replacement across Bergen, Hudson, Essex, Morris, and Passaic County.</p>
-  <div class="hero-actions">{call_btn()}<a class="btn btn-ghost-light" href="/contact-us/">Get a free estimate</a></div>
+  <h1>Trenchless No Dig Sewer Repair <span class="hl">in New York and New Jersey</span></h1>
+  <p class="lead">Fix a broken, root-filled, or collapsing sewer line without digging up your yard, driveway, or basement. Usually done in a day, with camera video before and after.</p>
+  <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="/trenchless/">How trenchless repair works</a></div>
   <ul class="trust">{trust}</ul>
 </div></section>
 
 <section class="sec dark"><div class="wrap">
   <div class="sec-head"><p class="eyebrow">What we do</p><h2>Trenchless specialists, not general plumbers</h2>
-  <p>We focus on one thing: diagnosing and fixing sewer and water lines with the least possible disruption to your property.</p></div>
+  <p>No-dig sewer repair is our specialty, backed by high pressure hydro jetting and HD sewer camera inspections.</p></div>
   <div class="grid g3 svc-grid">{core}</div>
 </div></section>
 
@@ -220,8 +223,8 @@ def home():
   </div>
 </div></section>
 '''
-    return layout("/", "Trenchless Sewer Repair & Hydro Jetting in North NJ | Ray Rooter Trenchless",
-                  "No-dig sewer line repair, pipelining, hydro jetting, sewer camera inspection, and trenchless water line replacement in Bergen, Hudson, Essex, Morris, and Passaic County NJ. Free estimates.", body, "/")
+    return layout("/", "Trenchless No Dig Sewer Repair in New York & New Jersey | Ray Rooter Trenchless",
+                  "Trenchless no-dig sewer repair, pipe lining, hydro jetting, and sewer camera inspections in New York and New Jersey. Fix your sewer line without digging up your yard. Free estimates.", body, "/")
 
 def render_body(blocks):
     out = []
@@ -239,7 +242,7 @@ def page_hero(title, sub, crumb=None):
     return f'<section class="page-hero"><div class="wrap">{c}<h1>{e(title)}</h1><p class="lead">{e(sub)}</p><div class="hero-actions">{call_btn()}</div></div></section>'
 
 def aside():
-    links = "".join(f'<li><a href="{s["path"]}">{e(s["nav"])}</a></li>' for s in SERVICES)
+    links = "".join(f'<li><a href="{href(s)}">{e(s["nav"])}</a></li>' for s in SERVICES)
     return f'''<aside class="side">
   <div class="card side-cta"><h3>Free estimate</h3><p>Call or text to describe the problem. Camera inspection available.</p>{call_btn("btn btn-primary btn-block")}<a class="btn btn-outline btn-block" href="{SITE["sms_href"]}">Text us</a><p class="small">{SITE["hours"]}</p></div>
   <div class="card"><h3>Services</h3><ul class="side-links">{links}</ul></div>
@@ -255,7 +258,7 @@ def service_page(s):
     body = page_hero(s["title"], s["summary"], '<a href="/services/">Services</a>') + f'''
 <section class="sec"><div class="wrap content-grid"><article class="prose">{figure(s)}{render_body(s["body"])}</article>{aside()}</div></section>
 {reviews_block(3)}'''
-    return layout(s["path"], s["seo_title"], s["desc"], body, "/services/")
+    return layout(s["path"], s["seo_title"], s["desc"], body, "/services/", canonical=s.get("canonical"))
 
 def city_page(c):
     blocks = [("p", c["intro"]), ("p", c["local"]),
@@ -279,6 +282,87 @@ def services_index(path):
 <div class="sec-head" style="margin-top:3rem"><h2>Service areas</h2></div><p class="chips center">{areas}</p></div></section>'''
     return layout(path, "Trenchless Sewer & Water Line Services | Ray Rooter Trenchless",
                   "Trenchless sewer repair, pipelining, hydro jetting, sewer camera inspection, and trenchless water line replacement in North NJ.", body, "/services/")
+
+def trenchless_page():
+    T = TRENCHLESS
+    signs = "".join(f"<li>{e(x)}</li>" for x in T["signs"])
+    fixes = "".join(f"<li>{e(x)}</li>" for x in T["fixes"])
+    faq = "".join(f'<details class="faq"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in T["faq"])
+    by = {r[0]: r for r in REVIEWS}
+    revs = "".join(review_card(by[n], clamp=False) for n in T["review_names"] if n in by)
+    steps = [("1", "HD camera inspection", "We scope the line, find the damage, and measure it. You see the video."),
+             ("2", "Hydro jet the pipe", "Roots, scale, and debris are cleared so the liner bonds to clean pipe."),
+             ("3", "Install the liner", "A resin liner goes in through a cleanout and cures into a new pipe inside the old one."),
+             ("4", "Camera it again", "We run the camera through the finished pipe so you can see the result.")]
+    steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
+    faq_schema = {"@context": "https://schema.org", "@type": "FAQPage",
+                  "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in T["faq"]]}
+    svc_schema = {"@context": "https://schema.org", "@type": "Service", "serviceType": "Trenchless sewer repair",
+                  "name": "Trenchless No Dig Sewer Repair", "provider": {"@type": "HomeAndConstructionBusiness", "name": SITE["name"], "telephone": "+1-" + SITE["phone"]},
+                  "areaServed": ["New Jersey", "New York"]}
+    head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
+    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No trench through your property", "Usually done in a day", "10-year liner warranty", "Free estimates"])
+    body = f'''
+<section class="hero" style="--hero:url('{IMAGES["basement_rig"]}')"><div class="wrap hero-inner">
+  <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google &middot; {SITE["review_count"]} reviews</p>
+  <h1>Trenchless No Dig Sewer Repair</h1>
+  <p class="lead">We fix cracked, root-filled, and broken sewer lines from the inside, without tearing up your lawn, driveway, or finished basement. Serving New York and New Jersey.</p>
+  <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="{SITE["sms_href"]}">{icon("sms")}<span>Text us photos</span></a></div>
+  <ul class="trust">{trust}</ul>
+</div></section>
+
+<section class="sec"><div class="wrap split">
+  <div class="prose">
+    <p class="eyebrow">Is your sewer line failing?</p>
+    <h2>Signs you need sewer line repair</h2>
+    <ul class="checks">{signs}</ul>
+    <p>Not sure? A <a href="/services/sewer-line-camera/">sewer camera inspection</a> shows exactly what's wrong before anyone quotes you a repair.</p>
+  </div>
+  <div class="photo"><img src="{IMAGES["street_job"]}" alt="Ray Rooter crew on a trenchless sewer repair job" loading="lazy"></div>
+</div></section>
+
+<section class="sec dark"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">How no-dig repair works</p><h2>A new pipe inside the old one, usually in a day</h2>
+  <p>Cured-in-place pipe (CIPP) lining creates a seamless, root-proof pipe inside your existing sewer line, installed through a cleanout instead of a trench.</p></div>
+  <ol class="steps steps-dark">{steps_html}</ol>
+</div></section>
+
+<section class="sec alt"><div class="wrap split">
+  <div>
+    <p class="eyebrow">Trenchless vs. digging</p>
+    <h2>Keep your yard, driveway, and basement floor</h2>
+    <table class="compare"><thead><tr><th></th><th>Trenchless</th><th>Dig &amp; replace</th></tr></thead><tbody>
+      <tr><td>Excavation</td><td>Through a cleanout</td><td>Full trench</td></tr>
+      <tr><td>Typical time</td><td>About a day</td><td>Several days or more</td></tr>
+      <tr><td>Lawn, driveway, basement</td><td>Left intact</td><td>Torn up and restored</td></tr>
+      <tr><td>Finished pipe</td><td>Seamless, root-proof</td><td>Jointed pipe</td></tr>
+      <tr><td>Street permits &amp; police detail</td><td>Usually avoided</td><td>Often required</td></tr>
+    </tbody></table>
+  </div>
+  <div class="prose">
+    <h2>What we fix without digging</h2>
+    <ul class="checks">{fixes}</ul>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">Reviews</p><h2>Homeowners who skipped the excavator</h2></div>
+  {rating_summary()}
+  <div class="masonry">{revs}</div>
+  <p class="center"><a class="btn btn-primary" href="/clients-one/">Read more reviews</a></p>
+</div></section>
+
+<section class="sec alt"><div class="wrap narrow-wrap">
+  <div class="sec-head"><p class="eyebrow">FAQ</p><h2>Trenchless sewer repair questions</h2></div>
+  {faq}
+</div></section>
+
+<section class="sec dark"><div class="wrap">
+  <div class="sec-head"><h2>Related services</h2><p>Every trenchless job starts with a camera and a clean pipe.</p></div>
+  <div class="grid g3 svc-grid">{"".join(service_card(s) for s in SERVICES[1:4])}</div>
+</div></section>
+'''
+    return layout("/trenchless/", T["seo_title"], T["desc"], body, "/trenchless/", extra_head=head)
 
 def about():
     body = page_hero("About Ray Rooter Trenchless", "Local, licensed, and focused on sewer and water lines.") + f'''
@@ -372,6 +456,7 @@ def main():
         pages.append(write(s["path"], service_page(s)))
     for c in CITIES:
         pages.append(write(c["path"], city_page(c)))
+    pages.append(write("/trenchless/", trenchless_page()))
     pages.append(write("/service-areas/", areas_index()))
     for c in COUNTIES:
         pages.append(write(f"/service-areas/{c['slug']}/", county_page(c)))

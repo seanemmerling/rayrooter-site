@@ -201,7 +201,7 @@ def home():
     <div class="stat"><b>1 day</b><span>typical trenchless repair</span></div>
     <div class="stat"><b>0</b><span>trenches through your yard</span></div>
     <div class="stat"><b>50 yr</b><span>design life of a CIPP liner</span></div>
-    <div class="stat"><b>10 yr</b><span>manufacturer's warranty</span></div>
+    <div class="stat"><b>{SITE["rating"]}&#9733;</b><span>Google rating</span></div>
   </div>
 </div></section>
 
@@ -274,7 +274,7 @@ def city_page(c):
                       "Sewer camera inspections, including pre-purchase inspections", "Trenchless water line replacement"]),
               ("h2", "Why homeowners choose trenchless"),
               ("ul", ["No trench through your yard, driveway, or basement", "Usually completed in a day",
-                      "Seamless, root-proof pipe with a 10-year manufacturer's warranty", "Camera video before and after the work"])]
+                      "Seamless, root-proof pipe designed to last 50 years", "Camera video before and after the work"])]
     title = f"Trenchless Sewer Repair in {c['city']}"
     body = page_hero(title, "Fix roots, cracks, and collapsed pipe without excavating.", '<a href="/services/">Services</a>') + f'''
 <section class="sec"><div class="wrap content-grid"><article class="prose">{render_body(blocks)}</article>{aside()}</div></section>
@@ -309,7 +309,7 @@ def trenchless_page():
                   "name": "Trenchless No Dig Sewer Repair", "provider": {"@type": "HomeAndConstructionBusiness", "name": SITE["name"], "telephone": "+1-" + SITE["phone"]},
                   "areaServed": ["Northern New Jersey"]}
     head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
-    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging at all", "Usually done in a day", "10-year liner warranty", "Free estimates"])
+    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging at all", "Usually done in a day", "Designed to last 50 years", "Free estimates"])
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["basement_rig"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google &middot; {SITE["review_count"]} reviews</p>

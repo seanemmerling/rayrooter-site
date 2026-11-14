@@ -131,7 +131,7 @@ def home():
              ("3", "Fix it without digging", "We reline or replace the pipe from small access points, usually in a day."),
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
     steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
-    core = "".join(service_card(s) for s in SERVICES[:5])
+    core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="{SITE["phone_href"]}"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Call {SITE["phone"]} &rarr;</span></a>'''
     areas = "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES)
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["hero"]}')"><div class="wrap hero-inner">
@@ -160,7 +160,12 @@ def home():
       <tr><td>Finished pipe</td><td>Seamless, root-proof</td><td>Jointed pipe</td></tr>
     </tbody></table>
   </div>
-  <div class="photo"><img src="{IMAGES["steve"]}" alt="Steven Ray with Ray Rooter trenchless equipment" loading="lazy"></div>
+  <div class="stats">
+    <div class="stat"><b>1 day</b><span>typical trenchless repair</span></div>
+    <div class="stat"><b>0</b><span>trenches through your yard</span></div>
+    <div class="stat"><b>50 yr</b><span>design life of a CIPP liner</span></div>
+    <div class="stat"><b>10 yr</b><span>manufacturer's warranty</span></div>
+  </div>
 </div></section>
 
 <section class="sec"><div class="wrap">
@@ -244,7 +249,7 @@ def about():
     <p>Because we focus on trenchless work, we bring the right equipment to every job and give you a straight answer and a firm price before we start. We are local, licensed, insured, and we stand behind our work.</p>
     <ul class="checks"><li>Licensed Master Plumber on every job</li><li>Licensed &amp; insured</li><li>Free estimates</li><li>Camera footage before and after</li><li>Locally owned and operated in {SITE["base_town"]}</li></ul>
   </div>
-  <div class="photo"><img src="{IMAGES["steve"]}" alt="Steven Ray, Licensed Master Plumber" loading="lazy"></div>
+  <div class="photo"><img src="{IMAGES["truck"]}" alt="Ray Rooter Trenchless truck and hydro jetting rig" loading="lazy"></div>
 </div></section>
 {reviews_block(3)}'''
     return layout("/about-us/", "About Ray Rooter Trenchless | North NJ Sewer Line Specialists",

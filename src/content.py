@@ -422,6 +422,8 @@ TRENCHLESS = {
          "Not always. A fully collapsed pipe or a severe sag can need a spot excavation. That's why every job starts with a camera inspection, so you know exactly what you're dealing with before you get a price."),
         ("How much does it cost?",
          "It depends on the length and size of the line, access, and its condition, so we quote after a camera inspection. Estimates are free. For comparison, digging up and replacing a sewer line in North Jersey commonly runs anywhere from $5,000 to $50,000 once restoration is included."),
+        ("Who will be at my house?",
+         "Owner and Licensed Master Plumber Steven Ray is on every job site, start to finish. The work isn't handed off to a subcontractor."),
         ("Do you work with homeowners insurance?",
          "We can provide the camera footage and documentation your insurance company asks for when you file a claim."),
         ("What areas do you serve?",

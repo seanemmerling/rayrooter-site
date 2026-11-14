@@ -95,7 +95,7 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head=""):
 <footer class="site-footer"><div class="wrap foot">
   <div>
     <a class="brand brand-foot" href="/"><img src="{IMAGES['logo']}" alt="Ray Rooter Trenchless" width="160" height="58"></a>
-    <p>No-dig sewer and water line repair for North Jersey homes and businesses. Licensed &amp; insured, led by Licensed Master Plumber Steven Ray.</p>
+    <p>No-dig sewer and water line repair for North Jersey homes and businesses. Licensed &amp; insured. Owner and Licensed Master Plumber Steven Ray is on every job site.</p>
   </div>
   <div><h3>Services</h3><ul>{svc_links}</ul></div>
   <div><h3>Service areas</h3><ul>{area_links}</ul></div>
@@ -162,7 +162,7 @@ def reviews_block(limit=3, heading=True):
 </div></section>'''
 
 def home():
-    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging up your yard", "Free estimates", "Licensed &amp; insured", "HD camera on every job"])
+    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging up your yard", "Owner &amp; Licensed Master Plumber on every job site", "Free estimates", "Licensed &amp; insured"])
     steps = [("1", "Camera inspection", "We run an HD camera through the line and show you exactly what's wrong."),
              ("2", "Clean the line", "High pressure hydro jetting clears roots, grease, and scale."),
              ("3", "Fix it without digging", "We reline or replace the pipe from small access points, usually in a day."),
@@ -216,8 +216,8 @@ def home():
   <div class="photo"><img src="{IMAGES["trailer"]}" alt="Ray Rooter Trenchless pipe lining trailer at a customer's home" loading="lazy"></div>
   <div>
     <p class="eyebrow">Local &amp; owner-operated</p>
-    <h2>Led by Licensed Master Plumber Steven Ray</h2>
-    <p>Ray Rooter Trenchless is a local company based in {SITE["base_town"]}. Steve has more than 15 years of experience on residential and commercial sewer jobs, and he's on every job. You get a straight diagnosis, a firm price before we start, and the camera footage to back it up.</p>
+    <h2>Owner &amp; Licensed Master Plumber Steven Ray on every job site</h2>
+    <p>Ray Rooter Trenchless is a local company based in {SITE["base_town"]}. Steve is the owner and a Licensed Master Plumber with more than 15 years of experience on residential and commercial sewer jobs, and he's on site for every job. You're never handed off to a subcontractor. You get a straight diagnosis, a firm price before we start, and the camera footage to back it up.</p>
     <p>We serve homeowners, home buyers, landlords, and commercial properties including restaurants, offices, and multi-family buildings.</p>
     <p class="chips">{areas}</p>
     <a class="btn btn-outline" href="/about-us/">About us</a>
@@ -245,7 +245,7 @@ def page_hero(title, sub, crumb=None):
 def aside():
     links = "".join(f'<li><a href="{href(s)}">{e(s["nav"])}</a></li>' for s in SERVICES)
     return f'''<aside class="side">
-  <div class="card side-cta"><h3>Free estimate</h3><p>Call or text to describe the problem. Camera inspection available.</p>{call_btn("btn btn-primary btn-block")}<a class="btn btn-outline btn-block" href="{SITE["sms_href"]}">Text us</a><p class="small">{SITE["hours"]}</p></div>
+  <div class="card side-cta"><h3>Free estimate</h3><p>Call or text to describe the problem. Camera inspection available.</p><p class="small"><b>Owner &amp; Licensed Master Plumber on every job site.</b></p>{call_btn("btn btn-primary btn-block")}<a class="btn btn-outline btn-block" href="{SITE["sms_href"]}">Text us</a><p class="small">{SITE["hours"]}</p></div>
   <div class="card"><h3>Services</h3><ul class="side-links">{links}</ul></div>
 </aside>'''
 
@@ -274,7 +274,7 @@ def city_page(c):
                       "Sewer camera inspections, including pre-purchase inspections", "Trenchless water line replacement"]),
               ("h2", "Why homeowners choose trenchless"),
               ("ul", ["No trench through your yard, driveway, or basement", "Usually completed in a day",
-                      "Seamless, root-proof pipe designed to last 50 years", "Camera video before and after the work"])]
+                      "Owner and Licensed Master Plumber Steven Ray on every job site", "Seamless, root-proof pipe designed to last 50 years", "Camera video before and after the work"])]
     title = f"Trenchless Sewer Repair in {c['city']}"
     body = page_hero(title, "Fix roots, cracks, and collapsed pipe without excavating.", '<a href="/services/">Services</a>') + f'''
 <section class="sec"><div class="wrap content-grid"><article class="prose">{render_body(blocks)}</article>{aside()}</div></section>
@@ -309,7 +309,7 @@ def trenchless_page():
                   "name": "Trenchless No Dig Sewer Repair", "provider": {"@type": "HomeAndConstructionBusiness", "name": SITE["name"], "telephone": "+1-" + SITE["phone"]},
                   "areaServed": ["Northern New Jersey"]}
     head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
-    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging at all", "Usually done in a day", "Designed to last 50 years", "Free estimates"])
+    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging at all", "Owner &amp; Licensed Master Plumber on every job site", "Usually done in a day", "Free estimates"])
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["basement_rig"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google &middot; {SITE["review_count"]} reviews</p>
@@ -383,15 +383,15 @@ def about():
     body = page_hero("About Ray Rooter Trenchless", "Local, licensed, and focused on sewer and water lines.") + f'''
 <section class="sec"><div class="wrap split">
   <div class="prose">
-    <p>Ray Rooter Trenchless specializes in one thing: fixing sewer and water lines without digging up your property. Led by Steven Ray, a Licensed Master Plumber with more than 15 years of experience on residential and commercial jobs, our crew uses trenchless pipelining, high pressure hydro jetting, and HD sewer cameras to find the problem and fix it right the first time.</p>
+    <p>Ray Rooter Trenchless specializes in one thing: fixing sewer and water lines without digging up your property. Owner Steven Ray, a Licensed Master Plumber with more than 15 years of experience on residential and commercial jobs, is on every job site. Our crew uses trenchless pipelining, high pressure hydro jetting, and HD sewer cameras to find the problem and fix it right the first time.</p>
     <p>Because we focus on trenchless work, we bring the right equipment to every job and give you a straight answer and a firm price before we start. We are local, licensed, insured, and we stand behind our work.</p>
-    <ul class="checks"><li>Licensed Master Plumber on every job</li><li>Licensed &amp; insured</li><li>Free estimates</li><li>Camera footage before and after</li><li>Locally owned and operated in {SITE["base_town"]}</li></ul>
+    <ul class="checks"><li>Owner &amp; Licensed Master Plumber on every job site</li><li>Licensed &amp; insured</li><li>Free estimates</li><li>Camera footage before and after</li><li>Locally owned and operated in {SITE["base_town"]}</li></ul>
   </div>
   <div class="photo"><img src="{IMAGES["trailer_2"]}" alt="Ray Rooter pipe lining trailer in a residential driveway" loading="lazy"></div>
 </div></section>
 {reviews_block(3)}'''
     return layout("/about-us/", "About Ray Rooter Trenchless | North NJ Sewer Line Specialists",
-                  "Licensed and insured trenchless sewer and water line specialists led by Master Plumber Steven Ray, serving Bergen, Hudson, Essex, Morris, and Passaic County NJ.", body, "/about-us/")
+                  "Licensed and insured trenchless sewer and water line specialists with owner and Licensed Master Plumber Steven Ray on every job site, serving Bergen, Hudson, Essex, Morris, and Passaic County NJ.", body, "/about-us/")
 
 def contact(path):
     body = page_hero("Get a Free Estimate", "The fastest way to reach us is a call or text.") + f'''

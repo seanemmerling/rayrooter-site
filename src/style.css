@@ -155,3 +155,8 @@ p{margin:0 0 1em}
 .svc-photo{margin:0 0 28px}.svc-photo img{border-radius:16px;width:100%;aspect-ratio:16/9;object-fit:cover;box-shadow:var(--shadow)}
 .gallery{grid-template-columns:repeat(4,1fr)}
 @media (max-width:640px){.brand img{height:42px}.gallery{grid-template-columns:1fr 1fr}}
+
+.towns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 18px;list-style:none;padding:0}
+.towns li{padding:6px 0;border-bottom:1px solid var(--line)}
+@media (max-width:640px){.towns{grid-template-columns:1fr 1fr}}
+@media (max-width:1100px){.nav a{padding:8px 9px;font-size:.92rem}}

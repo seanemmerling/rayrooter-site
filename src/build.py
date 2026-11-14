@@ -1,7 +1,7 @@
 """Builds the static site into public/. Run: python3 src/build.py"""
 import html, json, pathlib, shutil, sys
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from content import SITE, IMAGES, REVIEWS, SERVICES, CITIES, REDIRECTS
+from content import SITE, IMAGES, REVIEWS, SERVICES, CITIES, COUNTIES, REDIRECTS
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "public"
@@ -30,7 +30,7 @@ def stars(n=5):
 def call_btn(cls="btn btn-primary", label=None):
     return f'<a class="{cls}" href="{SITE["phone_href"]}">{icon("phone")}<span>{label or "Call " + SITE["phone"]}</span></a>'
 
-NAV = [("/", "Home"), ("/services/", "Services"), ("/clients-one/", "Reviews"), ("/about-us/", "About"), ("/contact-us/", "Contact")]
+NAV = [("/", "Home"), ("/services/", "Services"), ("/service-areas/", "Service Areas"), ("/clients-one/", "Reviews"), ("/about-us/", "About"), ("/contact-us/", "Contact")]
 
 def schema():
     return {
@@ -50,7 +50,7 @@ def schema():
 def layout(path, title, desc, body, active="/"):
     nav = "".join(f'<a href="{h}"{" aria-current=page" if h == active else ""}>{t}</a>' for h, t in NAV)
     svc_links = "".join(f'<li><a href="{s["path"]}">{e(s["nav"])}</a></li>' for s in SERVICES[:5])
-    area_links = "".join(f'<li><a href="{c["path"]}">{e(c["city"])}</a></li>' for c in CITIES)
+    area_links = "".join(f'<li><a href="/service-areas/{c["slug"]}/">{e(c["name"])}</a></li>' for c in COUNTIES)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -72,7 +72,7 @@ def layout(path, title, desc, body, active="/"):
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="topbar"><div class="wrap">
-  <span>Trenchless sewer &amp; water line specialists &middot; {e(", ".join(SITE['counties'][:3]))} &amp; {SITE['counties'][3]} County</span>
+  <span>Trenchless sewer &amp; water line specialists &middot; {e(SITE['area_line'])}</span>
   <span>{SITE['hours']} &middot; Licensed &amp; Insured</span>
 </div></div>
 <header class="site-header"><div class="wrap hdr">
@@ -132,12 +132,12 @@ def home():
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
     steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
     core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="{SITE["phone_href"]}"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Call {SITE["phone"]} &rarr;</span></a>'''
-    areas = "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES)
+    areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES)
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["hero"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google</p>
   <h1>Sewer &amp; water lines fixed <span class="hl">without digging up your yard.</span></h1>
-  <p class="lead">Trenchless sewer repair, pipelining, hydro jetting, camera inspections, and water line replacement across Bergen, Passaic, Morris, and Hudson County.</p>
+  <p class="lead">Trenchless sewer repair, pipelining, hydro jetting, camera inspections, and water line replacement across Bergen, Hudson, Essex, Morris, and Passaic County.</p>
   <div class="hero-actions">{call_btn()}<a class="btn btn-ghost-light" href="/contact-us/">Get a free estimate</a></div>
   <ul class="trust">{trust}</ul>
 </div></section>
@@ -188,7 +188,7 @@ def home():
 </div></section>
 '''
     return layout("/", "Trenchless Sewer Repair & Hydro Jetting in North NJ | Ray Rooter Trenchless",
-                  "No-dig sewer line repair, pipelining, hydro jetting, sewer camera inspection, and trenchless water line replacement in Bergen, Passaic, Morris, and Hudson County NJ. Free estimates.", body, "/")
+                  "No-dig sewer line repair, pipelining, hydro jetting, sewer camera inspection, and trenchless water line replacement in Bergen, Hudson, Essex, Morris, and Passaic County NJ. Free estimates.", body, "/")
 
 def render_body(blocks):
     out = []
@@ -240,7 +240,7 @@ def city_page(c):
 
 def services_index(path):
     cards = "".join(service_card(s) for s in SERVICES)
-    areas = "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES)
+    areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES)
     body = page_hero("Our Services", "Trenchless sewer and water line repair, hydro jetting, and camera inspections.") + f'''
 <section class="sec"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
 <div class="sec-head" style="margin-top:3rem"><h2>Service areas</h2></div><p class="chips center">{areas}</p></div></section>'''
@@ -259,7 +259,7 @@ def about():
 </div></section>
 {reviews_block(3)}'''
     return layout("/about-us/", "About Ray Rooter Trenchless | North NJ Sewer Line Specialists",
-                  "Licensed and insured trenchless sewer and water line specialists led by Master Plumber Steven Ray, serving Bergen, Passaic, Morris, and Hudson County NJ.", body, "/about-us/")
+                  "Licensed and insured trenchless sewer and water line specialists led by Master Plumber Steven Ray, serving Bergen, Hudson, Essex, Morris, and Passaic County NJ.", body, "/about-us/")
 
 def contact(path):
     body = page_hero("Get a Free Estimate", "The fastest way to reach us is a call or text.") + f'''
@@ -271,7 +271,7 @@ def contact(path):
 <div class="wrap prose narrow">
   <h2>What to include</h2>
   <ul class="checks"><li>Your town and the property type (house, multi-family, commercial)</li><li>What's happening: backups, slow drains, low water pressure, wet spots</li><li>Whether you're buying the home and need a pre-purchase inspection</li></ul>
-  <p><strong>{SITE["hours"]}.</strong> Serving Bergen, Passaic, Morris, and Hudson County from {SITE["base_town"]}.</p>
+  <p><strong>{SITE["hours"]}.</strong> Serving Bergen, Hudson, Essex, Morris, and Passaic County from {SITE["base_town"]}.</p>
 </div></section>'''
     return layout(path, "Contact Ray Rooter Trenchless | Free Sewer Line Estimate",
                   f"Call {SITE['phone']} for a free estimate on trenchless sewer repair, hydro jetting, or sewer camera inspection. {SITE['hours']}.", body, "/contact-us/")
@@ -289,6 +289,31 @@ def gallery():
 def not_found():
     body = page_hero("Page not found", "That page has moved. Here's where to go next.") + f'<section class="sec"><div class="wrap grid g3 svc-grid">{"".join(service_card(s) for s in SERVICES[:3])}</div></section>'
     return layout("/404.html", "Page not found | Ray Rooter Trenchless", "Page not found.", body)
+
+def county_page(c):
+    towns = "".join(f'<li>{e(t)}</li>' for t in c["towns"])
+    extra = f'<p>See also: <a href="{c["city_page"]}">our dedicated page for this area</a>.</p>' if c.get("city_page") else ""
+    blocks = [("p", c["intro"]), ("p", c["local"]),
+              ("h2", f"Trenchless services in {c['name']}"),
+              ("ul", ["Trenchless sewer line repair and pipelining (CIPP)", "High pressure hydro jetting and root removal",
+                      "Sewer camera inspections, including pre-purchase inspections", "Trenchless water line replacement",
+                      "Main sewer line cleaning"])]
+    body = page_hero(f"Trenchless Sewer Repair in {c['name']}, NJ", "Sewer and water lines fixed without digging up your property.", '<a href="/service-areas/">Service Areas</a>') + f'''
+<section class="sec"><div class="wrap content-grid"><article class="prose">{render_body(blocks)}
+<h2>Towns we serve in {e(c["name"])}</h2><ul class="towns">{towns}</ul>
+<p>Don't see your town? If it's in {e(c["name"])}, we cover it. Call {SITE["phone"]}.</p>{extra}</article>{aside()}</div></section>
+{reviews_block(3)}'''
+    return layout(f"/service-areas/{c['slug']}/", f"Trenchless Sewer Repair in {c['name']}, NJ | Ray Rooter Trenchless",
+                  f"No-dig sewer line repair, pipelining, hydro jetting, camera inspections, and trenchless water line replacement in {c['name']}, NJ, including {', '.join(c['towns'][:4])}. Free estimates.", body, "/service-areas/")
+
+def areas_index():
+    cards = "".join(f'''<a class="card svc" href="/service-areas/{c["slug"]}/"><h3>{e(c["name"])}</h3><p>{e(", ".join(c["towns"][:6]))}, and more.</p><span class="more">See towns &rarr;</span></a>''' for c in COUNTIES)
+    city = "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES)
+    body = page_hero("Service Areas", f"Trenchless sewer and water line service across {SITE['area_line']}.") + f'''
+<section class="sec"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
+<div class="sec-head" style="margin-top:3rem"><h2>Local pages</h2></div><p class="chips center">{city}</p></div></section>'''
+    return layout("/service-areas/", "Service Areas: Bergen, Hudson, Essex, Morris & Passaic County | Ray Rooter Trenchless",
+                  f"Ray Rooter Trenchless serves {SITE['area_line']}, NJ with no-dig sewer repair, hydro jetting, camera inspections, and water line replacement.", body, "/service-areas/")
 
 def write(path, text):
     p = OUT / (path.strip("/") + "/index.html" if not path.endswith(".html") else path.strip("/"))
@@ -311,6 +336,9 @@ def main():
         pages.append(write(s["path"], service_page(s)))
     for c in CITIES:
         pages.append(write(c["path"], city_page(c)))
+    pages.append(write("/service-areas/", areas_index()))
+    for c in COUNTIES:
+        pages.append(write(f"/service-areas/{c['slug']}/", county_page(c)))
     pages.append(write("/about-us/", about()))
     for p in ("/contact-us/", "/get-appointment/"):
         pages.append(write(p, contact(p)))

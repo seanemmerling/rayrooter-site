@@ -36,6 +36,35 @@ NAV = [("/", "Home"), ("/trenchless/", "Trenchless"), ("/services/", "Services")
 
 BIZ_ID = SITE["domain"] + "/#business"
 
+def page_type(path):
+    if path == "/": return "home"
+    if path.startswith("/trenchless"): return "trenchless_landing"
+    if "/trenchless-sewer-repair-" in path: return "city"
+    if path.startswith("/service-areas/") and path != "/service-areas/": return "service_area"
+    if path.startswith("/services/") and path != "/services/": return "service"
+    return {"/contact-us/": "contact", "/get-appointment/": "contact", "/clients-one/": "reviews"}.get(path, "other")
+
+def analytics_head(path, title):
+    gid = SITE["ga4_id"]
+    dl = json.dumps({"page_type": page_type(path), "page_title": title.split(" | ")[0]})
+    return (f'<script async src="https://www.googletagmanager.com/gtag/js?id={gid}"></script>'
+            f'<script>window.dataLayer=window.dataLayer||[];dataLayer.push({dl});'
+            f'function gtag(){{dataLayer.push(arguments);}}gtag("js",new Date());gtag("config","{gid}");</script>')
+
+TRACK_JS = """<script>
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a'); if(!a) return;
+  var h=a.getAttribute('href')||'', ev=null;
+  if(h.indexOf('tel:')===0) ev='phone_click';
+  else if(h.indexOf('sms:')===0) ev='text_click';
+  else if(h.indexOf('mailto:')===0) ev='email_click';
+  else if(h.indexOf('maps.google.com')>-1) ev='google_reviews_click';
+  if(!ev) return;
+  var loc=a.closest('.mobile-call')||a.classList.contains('mobile-call')?'sticky_bar':a.closest('.site-header')?'header':a.closest('.hero,.page-hero')?'hero':a.closest('.cta-band')?'cta_band':a.closest('aside')?'sidebar':a.closest('footer')?'footer':'body';
+  if(typeof gtag==='function') gtag('event',ev,{link_location:loc,link_text:(a.innerText||'').trim().slice(0,60),page_type:(window.dataLayer[0]||{}).page_type});
+});
+</script>"""
+
 def schema():
     return {
         "@context": "https://schema.org",
@@ -96,6 +125,7 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head="", h
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{SITE['domain']}{canonical or path}">{robots}{extra_head}
+{analytics_head(path, title)}
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:image" content="{SITE['domain']}{IMAGES['og']}">
@@ -154,6 +184,7 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head="", h
 b.addEventListener('click',function(){{var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Close menu':'Open menu');document.body.classList.toggle('menu-open',o);}});
 document.addEventListener('keydown',function(e){{if(e.key==='Escape'&&n.classList.contains('open'))b.click();}});}})();
 </script>
+{TRACK_JS}
 <a class="mobile-call" href="{SITE['phone_href']}">{icon("phone")} Call {SITE['phone']}</a>
 </body>
 </html>

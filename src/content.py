@@ -14,6 +14,7 @@ SITE = {
     "region": "Northern New Jersey",
     "google_reviews_url": "https://maps.google.com/?cid=5373159156397854594",
     "review_count": 55,
+    "ga4_id": "G-8Y79P9LDPZ",
     "rating": "4.9",
 }
 

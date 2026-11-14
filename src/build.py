@@ -34,22 +34,57 @@ def call_btn(cls="btn btn-primary", label=None):
 
 NAV = [("/", "Home"), ("/trenchless/", "Trenchless"), ("/services/", "Services"), ("/service-areas/", "Service Areas"), ("/clients-one/", "Reviews"), ("/about-us/", "About"), ("/contact-us/", "Contact")]
 
+BIZ_ID = SITE["domain"] + "/#business"
+
 def schema():
     return {
         "@context": "https://schema.org",
-        "@type": "HomeAndConstructionBusiness",
+        "@type": ["HomeAndConstructionBusiness", "Plumber"],
+        "@id": BIZ_ID,
         "name": SITE["name"],
         "url": SITE["domain"] + "/",
         "telephone": "+1-" + SITE["phone"],
         "email": SITE["email"],
         "image": SITE["domain"] + IMAGES["og"],
-        "address": {"@type": "PostalAddress", "addressLocality": "Midland Park", "addressRegion": "NJ", "addressCountry": "US"},
-        "areaServed": [f"{c} County, NJ" for c in SITE["counties"]] + ["Montclair, NJ", "Nutley, NJ"],
+        "logo": SITE["domain"] + IMAGES["logo"],
+        "address": {"@type": "PostalAddress", "streetAddress": "230 Rock St #2", "addressLocality": "Midland Park",
+                    "addressRegion": "NJ", "postalCode": "07432", "addressCountry": "US"},
+        "geo": {"@type": "GeoCoordinates", "latitude": 40.9953604, "longitude": -74.152213},
+        "hasMap": SITE["google_reviews_url"],
+        "areaServed": [{"@type": "AdministrativeArea", "name": f"{c} County, NJ"} for c in SITE["counties"]]
+                      + [{"@type": "City", "name": n} for n in ("Montclair, NJ", "Nutley, NJ")],
         "aggregateRating": {"@type": "AggregateRating", "ratingValue": SITE["rating"], "reviewCount": SITE["review_count"], "bestRating": "5"},
         "sameAs": [SITE["google_reviews_url"]],
+        "knowsAbout": ["Trenchless sewer repair", "Cured-in-place pipe lining", "Hydro jetting", "Sewer camera inspection",
+                       "Soil stack lining", "Trenchless water line replacement"],
     }
 
-def layout(path, title, desc, body, active="/", canonical=None, extra_head=""):
+def page_schemas(path, title, desc, home):
+    out = [schema()]
+    if home:
+        out.append({"@context": "https://schema.org", "@type": "WebSite", "name": SITE["name"], "url": SITE["domain"] + "/"})
+        return out
+    name = title.split(" | ")[0]
+    parts = [p for p in path.strip("/").split("/") if p]
+    crumbs = [("Home", "/")]
+    if len(parts) > 1:
+        sec = {"services": ("Services", "/services/"), "service-areas": ("Service Areas", "/service-areas/")}.get(parts[0])
+        if sec:
+            crumbs.append(sec)
+    crumbs.append((name, path))
+    out.append({"@context": "https://schema.org", "@type": "BreadcrumbList",
+                "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": SITE["domain"] + u} for i, (n, u) in enumerate(crumbs)]})
+    if (path.startswith("/services/") and len(parts) == 2) or (path.startswith("/service-areas/") and len(parts) == 2):
+        out.append({"@context": "https://schema.org", "@type": "Service", "name": name, "description": desc,
+                    "provider": {"@id": BIZ_ID}, "url": SITE["domain"] + path,
+                    "areaServed": {"@type": "State", "name": "New Jersey"}})
+    return out
+
+def layout(path, title, desc, body, active="/", canonical=None, extra_head="", home=False, noindex=False):
+    if len(title) > 62:
+        title = title.replace(" | Ray Rooter Trenchless", " | Ray Rooter")
+    ld = "".join(f'<script type="application/ld+json">{json.dumps(x)}</script>' for x in page_schemas(path, title, desc, home))
+    robots = '<meta name="robots" content="noindex">' if noindex else ""
     nav = "".join(f'<a href="{h}"{" aria-current=page" if h == active else ""}>{t}</a>' for h, t in NAV)
     svc_links = "".join(f'<li><a href="{href(s)}">{e(s["nav"])}</a></li>' for s in SERVICES[:5])
     area_links = "".join(f'<li><a href="/service-areas/{c["slug"]}/">{e(c["name"])}</a></li>' for c in COUNTIES)
@@ -60,16 +95,22 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
-<link rel="canonical" href="{SITE['domain']}{canonical or path}">{extra_head}
+<link rel="canonical" href="{SITE['domain']}{canonical or path}">{robots}{extra_head}
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:image" content="{SITE['domain']}{IMAGES['og']}">
 <meta property="og:type" content="website">
-<link rel="icon" href="{IMAGES['favicon']}">
+<meta property="og:url" content="{SITE['domain']}{canonical or path}">
+<meta property="og:site_name" content="{SITE['name']}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B0D10">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preload" as="image" href="{IMAGES['hero']}"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
-<script type="application/ld+json">{json.dumps(schema())}</script>
+{ld}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -224,8 +265,8 @@ def home():
   </div>
 </div></section>
 '''
-    return layout("/", "Trenchless No Dig Sewer Repair in New Jersey | Ray Rooter Trenchless",
-                  "Trenchless no-dig sewer repair, pipe lining, hydro jetting, and sewer camera inspections in northern New Jersey. Fix your sewer line without digging up your yard. Free estimates.", body, "/")
+    return layout("/", "Ray Rooter Trenchless | No Dig Sewer Repair in Northern NJ",
+                  "Trenchless no-dig sewer repair, pipe lining, hydro jetting, and sewer camera inspections in northern NJ. Fix your sewer line without digging up your yard.", body, "/", home=True)
 
 def render_body(blocks):
     out = []
@@ -288,7 +329,7 @@ def services_index(path):
 <section class="sec dark"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
 <div class="sec-head" style="margin-top:3rem"><h2>Service areas</h2></div><p class="chips center">{areas}</p></div></section>'''
     return layout(path, "Trenchless Sewer & Water Line Services | Ray Rooter Trenchless",
-                  "Trenchless sewer repair, pipelining, hydro jetting, sewer camera inspection, and trenchless water line replacement in North NJ.", body, "/services/")
+                  "Trenchless sewer repair, pipelining, hydro jetting, sewer camera inspection, and trenchless water line replacement in North NJ.", body, "/services/", canonical="/services/")
 
 def trenchless_page():
     T = TRENCHLESS
@@ -308,6 +349,7 @@ def trenchless_page():
     svc_schema = {"@context": "https://schema.org", "@type": "Service", "serviceType": "Trenchless sewer repair",
                   "name": "Trenchless No Dig Sewer Repair", "provider": {"@type": "HomeAndConstructionBusiness", "name": SITE["name"], "telephone": "+1-" + SITE["phone"]},
                   "areaServed": ["Northern New Jersey"]}
+    svc_schema["provider"] = {"@id": BIZ_ID}
     head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
     trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging at all", "Owner &amp; Licensed Master Plumber on every job site", "Usually done in a day", "Free estimates"])
     body = f'''
@@ -391,7 +433,7 @@ def about():
 </div></section>
 {reviews_block(3)}'''
     return layout("/about-us/", "About Ray Rooter Trenchless | North NJ Sewer Line Specialists",
-                  "Licensed and insured trenchless sewer and water line specialists with owner and Licensed Master Plumber Steven Ray on every job site, serving Bergen, Hudson, Essex, Morris, and Passaic County NJ.", body, "/about-us/")
+                  "Licensed, insured trenchless sewer and water line specialists. Owner and Licensed Master Plumber Steven Ray is on every job. Based in Midland Park, NJ.", body, "/about-us/")
 
 def contact(path):
     body = page_hero("Get a Free Estimate", "The fastest way to reach us is a call or text.") + f'''
@@ -406,7 +448,7 @@ def contact(path):
   <p><strong>{SITE["hours"]}.</strong> Serving Bergen, Hudson, Essex, Morris, and Passaic County from {SITE["base_town"]}.</p>
 </div></section>'''
     return layout(path, "Contact Ray Rooter Trenchless | Free Sewer Line Estimate",
-                  f"Call {SITE['phone']} for a free estimate on trenchless sewer repair, hydro jetting, or sewer camera inspection. {SITE['hours']}.", body, "/contact-us/")
+                  f"Call {SITE['phone']} for a free estimate on trenchless sewer repair, hydro jetting, or sewer camera inspection. {SITE['hours']}.", body, "/contact-us/", canonical="/contact-us/")
 
 def reviews_page():
     cards = "".join(review_card(r, clamp=False) for r in REVIEWS)
@@ -423,7 +465,7 @@ def gallery():
 
 def not_found():
     body = page_hero("Page not found", "That page has moved. Here's where to go next.") + f'<section class="sec"><div class="wrap grid g3 svc-grid">{"".join(service_card(s) for s in SERVICES[:3])}</div></section>'
-    return layout("/404.html", "Page not found | Ray Rooter Trenchless", "Page not found.", body)
+    return layout("/404.html", "Page not found | Ray Rooter Trenchless", "This page has moved. Find trenchless sewer repair, hydro jetting, and camera inspection services from Ray Rooter Trenchless.", body, noindex=True)
 
 def county_page(c):
     towns = "".join(f'<li>{e(t)}</li>' for t in c["towns"])
@@ -441,7 +483,7 @@ def county_page(c):
 <p>{"Call " + SITE["phone"] + " with your address and we'll confirm." if c.get("state") == "NY" else "Don't see your town? If it's in " + e(c["name"]) + ", we cover it. Call " + SITE["phone"] + "."}</p>{extra}</article>{aside()}</div></section>
 {reviews_block(3)}'''
     return layout(f"/service-areas/{c['slug']}/", f"Trenchless Sewer Repair in {c['name']}, {st} | Ray Rooter Trenchless",
-                  f"No-dig sewer line repair, pipelining, hydro jetting, camera inspections, and trenchless water line replacement in {c['name']}, {st}, including {', '.join(c['towns'][:4])}. Free estimates.", body, "/service-areas/")
+                  f"No-dig sewer repair, pipe lining, hydro jetting, and camera inspections in {c['name']}, {st}: {', '.join(c['towns'][:3])}, and more. Free estimates.", body, "/service-areas/")
 
 def areas_index():
     cards = "".join(f'''<a class="card svc" href="/service-areas/{c["slug"]}/"><h3>{e(c["name"])}</h3><p>{e(", ".join(c["towns"][:6]))}, and more.</p><span class="more">See towns &rarr;</span></a>''' for c in COUNTIES)
@@ -449,8 +491,8 @@ def areas_index():
     body = page_hero("Service Areas", "Trenchless sewer and water line service across northern New Jersey.") + f'''
 <section class="sec dark"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
 <div class="sec-head" style="margin-top:3rem"><h2>Local pages</h2></div><p class="chips center">{city}</p></div></section>'''
-    return layout("/service-areas/", "Service Areas: Bergen, Essex, Hudson, Morris, Passaic & Sussex County NJ | Ray Rooter Trenchless",
-                  f"Ray Rooter Trenchless serves {SITE['area_line']}, NJ with no-dig sewer repair, hydro jetting, camera inspections, and water line replacement.", body, "/service-areas/")
+    return layout("/service-areas/", "Service Areas in Northern New Jersey | Ray Rooter Trenchless",
+                  "Trenchless sewer repair, hydro jetting, and camera inspections across Bergen, Essex, Hudson, Morris, Passaic, and Sussex County, NJ.", body, "/service-areas/")
 
 def write(path, text):
     p = OUT / (path.strip("/") + "/index.html" if not path.endswith(".html") else path.strip("/"))
@@ -466,6 +508,7 @@ def main():
     (OUT / "assets").mkdir(parents=True)
     shutil.copy(ROOT / "src" / "style.css", OUT / "assets" / "style.css")
     shutil.copytree(ROOT / "src" / "img", OUT / "assets" / "img")
+    shutil.copy(ROOT / "src" / "img" / "favicon.ico", OUT / "favicon.ico")
     pages = [write("/", home())]
     for p in ("/services/", "/all-services/"):
         pages.append(write(p, services_index(p)))
@@ -483,7 +526,7 @@ def main():
     pages.append(write("/clients-one/", reviews_page()))
     pages.append(write("/gallery/", gallery()))
     write("/404.html", not_found())
-    urls = "".join(f"<url><loc>{SITE['domain']}{p}</loc></url>" for p in pages if p != "/get-appointment/")
+    urls = "".join(f"<url><loc>{SITE['domain']}{p}</loc></url>" for p in pages if p not in ("/get-appointment/", "/all-services/", "/services/pipelining/"))
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE['domain']}/sitemap.xml\n")
     print(f"Built {len(pages)} pages into {OUT}")

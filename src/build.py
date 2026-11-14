@@ -79,8 +79,9 @@ def layout(path, title, desc, body, active="/"):
   <a class="brand" href="/" aria-label="{SITE['name']} home">
     <img src="{IMAGES['logo']}" alt="Ray Rooter Trenchless" width="160" height="58">
   </a>
-  <nav class="nav" aria-label="Main">{nav}</nav>
+  <nav class="nav" id="site-nav" aria-label="Main">{nav}</nav>
   {call_btn("btn btn-primary hdr-call", SITE["phone"])}
+  <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
 </div></header>
 <main id="main">
 {body}
@@ -105,6 +106,11 @@ def layout(path, title, desc, body, active="/"):
 </div>
 <div class="wrap legal">&copy; Ray Rooter Trenchless. All rights reserved.</div>
 </footer>
+<script>
+(function(){{var b=document.querySelector('.menu-toggle'),n=document.getElementById('site-nav');
+b.addEventListener('click',function(){{var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Close menu':'Open menu');document.body.classList.toggle('menu-open',o);}});
+document.addEventListener('keydown',function(e){{if(e.key==='Escape'&&n.classList.contains('open'))b.click();}});}})();
+</script>
 <a class="mobile-call" href="{SITE['phone_href']}">{icon("phone")} Call {SITE['phone']}</a>
 </body>
 </html>

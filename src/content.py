@@ -14,20 +14,17 @@ SITE = {
     "rating": "4.9",
 }
 
-# TODO before DNS cutover: copy these into public/assets/img/ and switch IMG to "/assets/img/".
-# They are still served from the old Bluehost site.
-IMG = "https://www.rayrooter.com/wp-content/uploads/"
+# Images live in src/img/ and are copied to /assets/img/ at build time.
+IMG = "/assets/img/"
 IMAGES = {
-    "hero": IMG + "2016/11/sewerjetting_finish.jpg",
-    "steve": IMG + "2020/01/raptors-1-1024x683.jpg",
-    "truck": IMG + "2026/04/rayrootertrenchless.jpg",
-    "pipeline": IMG + "2016/11/pipeline_1.jpg",
-    "reline": IMG + "2016/11/before-after-pipe-reline-1-157x300.jpg",
-    "camera": IMG + "2016/11/ray_rooter_sewer-300x253.jpg",
-    "logo": IMG + "2019/12/rayrooter3.png",
-    "favicon": IMG + "2019/12/cropped-rayrooterfavicon-1-32x32.jpg",
-    "gallery": [IMG + f"2016/{m}/gallery{i}.jpg" for m, i in
-                [("12", 1), ("12", 2), ("12", 3), ("11", 4), ("11", 5), ("11", 6)]],
+    "hero": IMG + "hero.webp",            # truck + jetter, NYC skyline
+    "og": IMG + "og.jpg",
+    "logo": IMG + "logo.png",
+    "favicon": IMG + "favicon.png",
+    "street_job": IMG + "street-job.webp",
+    "basement_rig": IMG + "basement-rig.webp",
+    "gallery": [IMG + f for f in ["street-job.webp", "basement-rig.webp", "street-job-2.webp", "basement-rig-2.webp",
+                                   "street-cones.webp", "basement-rig-3.webp", "trailer.webp", "tight-basement.webp"]],
 }
 
 # Real Google reviews (text as posted). Keep in sync with the Google Business Profile.
@@ -49,6 +46,7 @@ SERVICES = [
         "seo_title": "Trenchless Sewer Repair & Pipelining in North NJ | Ray Rooter Trenchless",
         "desc": "No-dig sewer line repair with cured-in-place pipe lining (CIPP). Fix roots, cracks, and missing pipe without excavating. Bergen, Passaic, Morris, and Hudson County NJ.",
         "icon": "pipe",
+        "img": ("/assets/img/basement-rig.webp", "Trenchless sewer equipment set up in a finished basement"),
         "summary": "Line the old pipe from the inside. No trench across your yard, driveway, or basement floor.",
         "body": [
             ("p", "If your sewer line is cracked, missing sections, rotted along the bottom, or full of tree roots, it doesn't have to be dug up. We repair it from the inside with CIPP (cured-in-place pipe): a resin-saturated liner is pulled into the existing pipe and cured in place, forming a new, seamless pipe within the old one."),
@@ -73,6 +71,7 @@ SERVICES = [
         "seo_title": "Trenchless Water Line Replacement in North NJ | Ray Rooter Trenchless",
         "desc": "Replace your water service line without digging a trench. Fix low pressure and rusty water, usually in one day. Bergen, Passaic, and Morris County NJ.",
         "icon": "water",
+        "img": ("/assets/img/street-job-2.webp", "Trenchless job site on a residential street"),
         "summary": "New water service line from the street to your house, pulled underground. No trench.",
         "body": [
             ("p", "Low water pressure, rusty water, a soggy spot in the lawn, or a sudden jump in your water bill can all point to a failing water service line. Many North Jersey homes still have original galvanized steel or lead service lines that are corroding from the inside."),
@@ -99,6 +98,7 @@ SERVICES = [
         "seo_title": "High Pressure Hydro Jetting in North NJ | Ray Rooter Trenchless",
         "desc": "High pressure hydro jetting clears tree roots, grease, and scale from sewer lines in Bergen, Passaic, and Morris County NJ. Free estimates.",
         "icon": "jet",
+        "img": ("/assets/img/street-job.webp", "Ray Rooter crew working at a home in North Jersey"),
         "summary": "Scour roots, grease, and scale off the pipe wall and restore full flow.",
         "body": [
             ("p", "When snaking isn't enough, hydro jetting is. Many sewer lines in Bergen County are 50+ years old, and there's a good chance tree roots have found their way in. A snake punches a hole through the blockage. A high pressure jet scours the entire pipe wall, clearing roots, grease, sludge, and scale and restoring the line to nearly new condition."),

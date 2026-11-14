@@ -40,7 +40,7 @@ def schema():
         "url": SITE["domain"] + "/",
         "telephone": "+1-" + SITE["phone"],
         "email": SITE["email"],
-        "image": IMAGES["truck"],
+        "image": SITE["domain"] + IMAGES["og"],
         "address": {"@type": "PostalAddress", "addressLocality": "Midland Park", "addressRegion": "NJ", "addressCountry": "US"},
         "areaServed": [f"{c} County, NJ" for c in SITE["counties"]],
         "aggregateRating": {"@type": "AggregateRating", "ratingValue": SITE["rating"], "bestRating": "5"},
@@ -61,10 +61,10 @@ def layout(path, title, desc, body, active="/"):
 <link rel="canonical" href="{SITE['domain']}{path}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
-<meta property="og:image" content="{IMAGES['hero']}">
+<meta property="og:image" content="{SITE['domain']}{IMAGES['og']}">
 <meta property="og:type" content="website">
 <link rel="icon" href="{IMAGES['favicon']}">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="{IMAGES['hero']}"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
 <script type="application/ld+json">{json.dumps(schema())}</script>
@@ -77,7 +77,7 @@ def layout(path, title, desc, body, active="/"):
 </div></div>
 <header class="site-header"><div class="wrap hdr">
   <a class="brand" href="/" aria-label="{SITE['name']} home">
-    <span class="mark">RR</span><span class="wordmark">Ray Rooter<small>Trenchless</small></span>
+    <img src="{IMAGES['logo']}" alt="Ray Rooter Trenchless" width="160" height="58">
   </a>
   <nav class="nav" aria-label="Main">{nav}</nav>
   {call_btn("btn btn-primary hdr-call", SITE["phone"])}
@@ -91,7 +91,7 @@ def layout(path, title, desc, body, active="/"):
 </div></section>
 <footer class="site-footer"><div class="wrap foot">
   <div>
-    <a class="brand brand-foot" href="/"><span class="mark">RR</span><span class="wordmark">Ray Rooter<small>Trenchless</small></span></a>
+    <a class="brand brand-foot" href="/"><img src="{IMAGES['logo']}" alt="Ray Rooter Trenchless" width="160" height="58"></a>
     <p>No-dig sewer and water line repair for North Jersey homes and businesses. Licensed &amp; insured, led by Licensed Master Plumber Steven Ray.</p>
   </div>
   <div><h3>Services</h3><ul>{svc_links}</ul></div>
@@ -176,7 +176,7 @@ def home():
 {reviews_block(3)}
 
 <section class="sec alt"><div class="wrap split">
-  <div class="photo"><img src="{IMAGES["truck"]}" alt="Ray Rooter Trenchless truck and hydro jetting rig" loading="lazy"></div>
+  <div class="photo"><img src="{IMAGES["street_job"]}" alt="Ray Rooter crew on a trenchless job in North Jersey" loading="lazy"></div>
   <div>
     <p class="eyebrow">Local &amp; owner-operated</p>
     <h2>Led by Licensed Master Plumber Steven Ray</h2>
@@ -212,9 +212,15 @@ def aside():
   <div class="card"><h3>Services</h3><ul class="side-links">{links}</ul></div>
 </aside>'''
 
+def figure(s):
+    if not s.get("img"):
+        return ""
+    src, alt = s["img"]
+    return f'<figure class="svc-photo"><img src="{src}" alt="{e(alt)}" loading="lazy"></figure>'
+
 def service_page(s):
     body = page_hero(s["title"], s["summary"], '<a href="/services/">Services</a>') + f'''
-<section class="sec"><div class="wrap content-grid"><article class="prose">{render_body(s["body"])}</article>{aside()}</div></section>
+<section class="sec"><div class="wrap content-grid"><article class="prose">{figure(s)}{render_body(s["body"])}</article>{aside()}</div></section>
 {reviews_block(3)}'''
     return layout(s["path"], s["seo_title"], s["desc"], body, "/services/")
 
@@ -249,7 +255,7 @@ def about():
     <p>Because we focus on trenchless work, we bring the right equipment to every job and give you a straight answer and a firm price before we start. We are local, licensed, insured, and we stand behind our work.</p>
     <ul class="checks"><li>Licensed Master Plumber on every job</li><li>Licensed &amp; insured</li><li>Free estimates</li><li>Camera footage before and after</li><li>Locally owned and operated in {SITE["base_town"]}</li></ul>
   </div>
-  <div class="photo"><img src="{IMAGES["truck"]}" alt="Ray Rooter Trenchless truck and hydro jetting rig" loading="lazy"></div>
+  <div class="photo"><img src="{IMAGES["basement_rig"]}" alt="Trenchless equipment set up in a finished basement with floors protected" loading="lazy"></div>
 </div></section>
 {reviews_block(3)}'''
     return layout("/about-us/", "About Ray Rooter Trenchless | North NJ Sewer Line Specialists",
@@ -276,7 +282,7 @@ def reviews_page():
                   "Read Google reviews from North Jersey homeowners who used Ray Rooter Trenchless for sewer repair, pipelining, jetting, and camera inspections.", body, "/clients-one/")
 
 def gallery():
-    imgs = "".join(f'<img src="{u}" alt="Ray Rooter sewer project" loading="lazy">' for u in IMAGES["gallery"])
+    imgs = "".join(f'<img src="{u}" alt="Ray Rooter Trenchless job photo" loading="lazy">' for u in IMAGES["gallery"])
     body = page_hero("Project Gallery", "A look at our trenchless and sewer work.") + f'<section class="sec"><div class="wrap gallery">{imgs}</div></section>'
     return layout("/gallery/", "Project Gallery | Ray Rooter Trenchless", "Photos of trenchless sewer repair, hydro jetting, and camera inspection projects in North NJ.", body)
 
@@ -297,6 +303,7 @@ def main():
         shutil.rmtree(OUT)
     (OUT / "assets").mkdir(parents=True)
     shutil.copy(ROOT / "src" / "style.css", OUT / "assets" / "style.css")
+    shutil.copytree(ROOT / "src" / "img", OUT / "assets" / "img")
     pages = [write("/", home())]
     for p in ("/services/", "/all-services/"):
         pages.append(write(p, services_index(p)))

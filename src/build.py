@@ -167,6 +167,7 @@ def home():
              ("2", "Clean the line", "High pressure hydro jetting clears roots, grease, and scale."),
              ("3", "Fix it without digging", "We reline or replace the pipe from small access points, usually in a day."),
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
+    inside_html = "".join(f'<figure class="inside"><img src="{u}" alt="{e(a)}" loading="lazy"><figcaption>{e(cap)}</figcaption></figure>' for u, a, cap in IMAGES["inside"])
     steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
     core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="/services/sewer-line-camera/"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a sewer camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Book a camera inspection &rarr;</span></a>'''
     areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES) + "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES if c["city"] in ("Montclair, NJ", "Nutley, NJ"))
@@ -293,8 +294,9 @@ def trenchless_page():
     revs = "".join(review_card(by[n], clamp=False) for n in T["review_names"] if n in by)
     steps = [("1", "HD camera inspection", "We scope the line, find the damage, and measure it. You see the video."),
              ("2", "Hydro jet the pipe", "Roots, scale, and debris are cleared so the liner bonds to clean pipe."),
-             ("3", "Install the liner", "A resin liner goes in through a cleanout and cures into a new pipe inside the old one."),
+             ("3", "Install the liner", "A resin liner goes in through a cleanout or the toilet flange and cures into a new pipe inside the old one."),
              ("4", "Camera it again", "We run the camera through the finished pipe so you can see the result.")]
+    inside_html = "".join(f'<figure class="inside"><img src="{u}" alt="{e(a)}" loading="lazy"><figcaption>{e(cap)}</figcaption></figure>' for u, a, cap in IMAGES["inside"])
     steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
     faq_schema = {"@context": "https://schema.org", "@type": "FAQPage",
                   "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in T["faq"]]}
@@ -302,7 +304,7 @@ def trenchless_page():
                   "name": "Trenchless No Dig Sewer Repair", "provider": {"@type": "HomeAndConstructionBusiness", "name": SITE["name"], "telephone": "+1-" + SITE["phone"]},
                   "areaServed": ["Northern New Jersey"]}
     head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
-    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No trench through your property", "Usually done in a day", "10-year liner warranty", "Free estimates"])
+    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging at all", "Usually done in a day", "10-year liner warranty", "Free estimates"])
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["basement_rig"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google &middot; {SITE["review_count"]} reviews</p>
@@ -328,12 +330,19 @@ def trenchless_page():
   <ol class="steps steps-dark">{steps_html}</ol>
 </div></section>
 
+<section class="sec"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">No digging at all</p><h2>We line your sewer from inside the house</h2>
+  <p>The lining machine sets up in your bathroom, basement, or closet and connects to the pipe through an existing cleanout or the toilet flange. Floors are covered, nothing gets excavated, and your yard and driveway are never touched.</p></div>
+  <div class="grid g3 inside-grid">{inside_html}</div>
+  <p class="center"><a href="/gallery/">See more job photos</a></p>
+</div></section>
+
 <section class="sec alt"><div class="wrap split">
   <div>
     <p class="eyebrow">Trenchless vs. digging</p>
     <h2>Keep your yard, driveway, and basement floor</h2>
     <table class="compare"><thead><tr><th></th><th>Trenchless</th><th>Dig &amp; replace</th></tr></thead><tbody>
-      <tr><td>Excavation</td><td>Through a cleanout</td><td>Full trench</td></tr>
+      <tr><td>Excavation</td><td>None: cleanout or toilet flange</td><td>Full trench</td></tr>
       <tr><td>Typical time</td><td>About a day</td><td>Several days or more</td></tr>
       <tr><td>Lawn, driveway, basement</td><td>Left intact</td><td>Torn up and restored</td></tr>
       <tr><td>Finished pipe</td><td>Seamless, root-proof</td><td>Jointed pipe</td></tr>
@@ -403,7 +412,7 @@ def reviews_page():
                   f"Read {SITE['review_count']} Google reviews from North Jersey homeowners who used Ray Rooter Trenchless for sewer repair, pipelining, jetting, and camera inspections.", body, "/clients-one/")
 
 def gallery():
-    imgs = "".join(f'<img src="{u}" alt="Ray Rooter Trenchless job photo" loading="lazy">' for u in IMAGES["gallery"])
+    imgs = "".join(f'<img src="{u}" alt="{e(a)}" loading="lazy">' for u, a in IMAGES["gallery"])
     body = page_hero("Project Gallery", "A look at our trenchless and sewer work.") + f'<section class="sec"><div class="wrap gallery">{imgs}</div></section>'
     return layout("/gallery/", "Project Gallery | Ray Rooter Trenchless", "Photos of trenchless sewer repair, hydro jetting, and camera inspection projects in North NJ.", body)
 

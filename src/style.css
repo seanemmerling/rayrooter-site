@@ -234,3 +234,4 @@ body.menu-open .mobile-call{display:none}
 .steps-dark .step h3{color:#fff}.steps-dark .step p{color:#A9B0BA}
 .steps-dark .step .num{background:var(--orange)}
 .prose a{color:var(--orange-d)}
+.inside{margin:0}.inside img{border-radius:14px;width:100%;aspect-ratio:4/5;object-fit:cover;box-shadow:var(--shadow)}.inside figcaption{font-weight:700;margin-top:10px;text-align:center}

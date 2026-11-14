@@ -26,8 +26,21 @@ IMAGES = {
     "favicon": IMG + "favicon.png",
     "street_job": IMG + "street-job.webp",
     "basement_rig": IMG + "basement-rig.webp",
-    "gallery": [IMG + f for f in ["street-job.webp", "basement-rig.webp", "street-job-2.webp", "basement-rig-2.webp",
+    "gallery": [
+        (IMG + "lining-toilet-flange.webp", "CIPP lining machine connected to the sewer at a toilet flange. No digging"),
+        (IMG + "lining-closet-cleanout.webp", "Liner going in through a cleanout inside a closet, floors protected"),
+        (IMG + "lining-bathroom.webp", "Pipe lining set up in a small bathroom through the toilet flange"),
+        (IMG + "lining-drum-finished-room.webp", "CIPP lining drum set up in a finished room with drop cloths down"),
+        (IMG + "closet-floor-cleanout.webp", "Existing floor cleanout used to line the sewer from inside the house"),
+        (IMG + "wall-cleanout-access.webp", "Small wall access opening to a cleanout, the only opening needed"),
+    ] + [(IMG + f, "Ray Rooter Trenchless job photo") for f in ["street-job.webp", "basement-rig.webp", "street-job-2.webp", "basement-rig-2.webp",
                                    "street-cones.webp", "basement-rig-3.webp", "trailer.webp", "tight-basement.webp"]],
+    # Lining from inside the house (no excavation), shown on /trenchless/
+    "inside": [
+        (IMG + "lining-toilet-flange.webp", "CIPP lining machine connected at a toilet flange", "Through the toilet flange"),
+        (IMG + "lining-closet-cleanout.webp", "Liner installed through a cleanout in a closet", "Through an indoor cleanout"),
+        (IMG + "wall-cleanout-access.webp", "Small wall opening to reach a cleanout", "A small access panel is all we open"),
+    ],
 }
 
 # Google reviews live in src/reviews.json (snapshot of the Business Profile).
@@ -63,7 +76,7 @@ SERVICES = [
             ("h2", "How it works"),
             ("ol", ["We run an HD camera through the line to locate the damage.",
                     "The line is hydro jetted clean so the liner bonds to the pipe wall.",
-                    "The liner is installed through an existing cleanout and cured in place.",
+                    "The liner is installed from inside the house, through an existing cleanout or the toilet flange, and cured in place.",
                     "We run the camera again so you can see the finished pipe."]),
         ],
     },
@@ -161,6 +174,7 @@ SERVICES = [
         "seo_title": "Roof Drain & Soil Stack Lining in North NJ | Ray Rooter Trenchless",
         "desc": "Trenchless lining for cast iron soil stacks, drain stacks, and roof drains in homes and commercial buildings. Stop leaks without opening walls and ceilings. Northern NJ.",
         "icon": "stack",
+        "img": ("/assets/img/lining-bathroom.webp", "Lining machine connected through the toilet flange in a bathroom"),
         "summary": "Reline cracked cast iron stacks and leaking roof drains without opening up walls and ceilings.",
         "body": [
             ("p", "Cast iron soil stacks, drain stacks, and roof drain leaders run vertically through the walls and chases of homes, apartment buildings, and commercial properties. After decades in service they corrode from the inside, scale up, crack, and develop pinhole leaks, often showing up as stains, odors, or water damage on the floors below."),
@@ -353,13 +367,13 @@ TRENCHLESS = {
               "Laterals running under the sidewalk or street"],
     "faq": [
         ("What is trenchless sewer repair?",
-         "Instead of digging a trench to replace a damaged sewer line, we repair it from the inside. A resin-saturated liner is pulled into the old pipe through a cleanout and cured in place, creating a new, seamless pipe inside the old one. It's also called no-dig sewer repair, pipe lining, or CIPP (cured-in-place pipe)."),
+         "Instead of digging a trench to replace a damaged sewer line, we repair it from the inside. A resin-saturated liner is installed into the old pipe through a cleanout or toilet flange and cured in place, creating a new, seamless pipe inside the old one. It's also called no-dig sewer repair, pipe lining, or CIPP (cured-in-place pipe)."),
         ("How long does it take?",
          "Most trenchless repairs are done in a day. Longer or more complicated lines can take two: one day to clean and measure, one day to install and cure the liner."),
         ("How long does a liner last?",
          "The liners we install carry a 10-year manufacturer's warranty and are designed to last 50 years. Because the new pipe has no joints, roots have nowhere to get back in."),
         ("Will you have to dig at all?",
-         "Usually not. We work through an existing cleanout. If there's no usable cleanout, we may install one, which is a small, contained excavation, not a trench across your property."),
+         "In most cases, no digging at all. We set up the lining machine inside the house and install the liner through an existing cleanout or through the toilet flange after pulling the toilet. At most we cut a small access panel in a wall or closet floor to reach a cleanout. If a line has no usable access point, we'll tell you after the camera inspection, before any work starts."),
         ("Can every sewer line be fixed without digging?",
          "Not always. A fully collapsed pipe or a severe sag can need a spot excavation. That's why every job starts with a camera inspection, so you know exactly what you're dealing with before you get a price."),
         ("How much does it cost?",

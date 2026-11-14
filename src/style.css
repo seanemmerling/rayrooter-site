@@ -254,3 +254,22 @@ h1,h2,h3{letter-spacing:-.035em}h1{font-size:clamp(2.7rem,5.4vw,5.3rem);line-hei
 @media(max-width:640px){.hero-inner{padding-top:84px;padding-bottom:85px}.sec{padding:72px 0}.card{padding:24px}.brand img{width:140px;height:50px}h1{font-size:clamp(2.5rem,11vw,3.7rem)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 
+
+/* CTA accessibility and contrast correction */
+:root{--orange:#E85D0C;--orange-d:#B83F00}
+a.btn.btn-primary,button.btn.btn-primary,.btn-primary,.cta-band .btn-light,.mobile-call{background:#E85D0C!important;color:#fff!important;border-color:#E85D0C!important;text-shadow:none!important;font-weight:800!important}
+a.btn.btn-primary:hover,button.btn.btn-primary:hover,.btn-primary:hover,.cta-band .btn-light:hover,.mobile-call:hover{background:#B83F00!important;border-color:#B83F00!important;color:#fff!important}
+.btn-primary .ic,.cta-band .btn-light .ic,.mobile-call .ic{color:currentColor!important}
+.btn-light,.hero .btn-light,.page-hero .btn-light{background:#fff!important;color:#142532!important;border-color:#fff!important;font-weight:800!important}
+.btn-light:hover,.hero .btn-light:hover,.page-hero .btn-light:hover{background:#E9EEF1!important;color:#102333!important}
+.btn-ghost-light,.hero .btn-ghost-light,.page-hero .btn-ghost-light{background:rgba(8,24,34,.65)!important;color:#fff!important;border:2px solid #fff!important;font-weight:800!important}
+.btn-ghost-light:hover,.hero .btn-ghost-light:hover,.page-hero .btn-ghost-light:hover{background:#fff!important;color:#142532!important}
+.side-cta .btn-outline,.svc-cta .btn-outline,.cta-band .btn-outline{background:transparent!important;border:2px solid #fff!important;color:#fff!important;font-weight:800!important}
+.side-cta .btn-outline:hover,.svc-cta .btn-outline:hover,.cta-band .btn-outline:hover{background:#fff!important;color:#142532!important}
+.btn-outline{border-width:2px;font-weight:800}
+.hdr-call{background:#E85D0C!important;color:#fff!important;border-color:#E85D0C!important}
+.hdr-call .ic{color:#fff!important}
+.hero .lead,.page-hero p,.cta-band p{color:#fff;opacity:1}
+.hero .eyebrow,.hero .hl{color:#FFAA70}
+.svc .more,.prose a{color:#B84300}
+@media(max-width:640px){.mobile-call{background:#E85D0C!important;color:#fff!important;border:2px solid #fff!important;box-shadow:0 6px 25px rgba(0,0,0,.4)}}

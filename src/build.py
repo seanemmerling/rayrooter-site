@@ -154,7 +154,7 @@ def reviews_block(limit=3, heading=True):
     head = f'''<div class="sec-head"><p class="eyebrow">Reviews</p><h2>What North Jersey homeowners say</h2></div>{rating_summary()}''' if heading else ""
     return f'''<section class="sec reviews-sec"><div class="wrap">{head}
 <div class="grid g3">{cards}</div>
-<p class="center"><a class="btn btn-primary" href="/clients-one/">Read all {SITE["review_count"]} reviews</a></p>
+<p class="center"><a class="btn btn-primary" href="/clients-one/">Read more reviews</a></p>
 </div></section>'''
 
 def home():

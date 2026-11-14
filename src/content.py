@@ -256,6 +256,13 @@ COUNTIES = [
     },
 ]
 
+COUNTIES.append({
+    "slug": "new-york-city", "name": "New York City", "state": "NY", "place_label": "Boroughs",
+    "towns": ["Staten Island", "Manhattan", "Brooklyn", "Queens", "The Bronx"],
+    "intro": "New York City's rowhouses, brownstones, and multi-family buildings sit on some of the oldest sewer laterals in the region, many running under basements, stoops, sidewalks, and the street to the city main.",
+    "local": "Opening a sidewalk or street in the city means permits, restoration, and days of disruption. Trenchless lining renews the line from inside through an existing cleanout, so in most cases nothing gets dug up.",
+})
+
 # Old WordPress URLs that should 301 to a new page (configure in render.yaml routes).
 REDIRECTS = {
     "/hoboken-trenchless-sewer-repair/": "/services/trenchless-sewer-repair-hoboken/",

@@ -43,7 +43,7 @@ def schema():
         "email": SITE["email"],
         "image": SITE["domain"] + IMAGES["og"],
         "address": {"@type": "PostalAddress", "addressLocality": "Midland Park", "addressRegion": "NJ", "addressCountry": "US"},
-        "areaServed": [f"{c} County, NJ" for c in SITE["counties"]],
+        "areaServed": [f"{c} County, NJ" for c in SITE["counties"]] + ["Staten Island, NY", "Manhattan, NY", "Brooklyn, NY", "Queens, NY", "Bronx, NY"],
         "aggregateRating": {"@type": "AggregateRating", "ratingValue": SITE["rating"], "reviewCount": SITE["review_count"], "bestRating": "5"},
         "sameAs": [SITE["google_reviews_url"]],
     }
@@ -418,22 +418,23 @@ def county_page(c):
               ("ul", ["Trenchless sewer line repair and pipelining (CIPP)", "High pressure hydro jetting and root removal",
                       "Sewer camera inspections, including pre-purchase inspections", "Trenchless water line replacement",
                       "Main sewer line cleaning"])]
-    body = page_hero(f"Trenchless Sewer Repair in {c['name']}, NJ", "Sewer and water lines fixed without digging up your property.", '<a href="/service-areas/">Service Areas</a>') + f'''
+    st = c.get("state", "NJ")
+    body = page_hero(f"Trenchless Sewer Repair in {c['name']}, {st}", "Sewer and water lines fixed without digging up your property.", '<a href="/service-areas/">Service Areas</a>') + f'''
 <section class="sec"><div class="wrap content-grid"><article class="prose">{render_body(blocks)}
-<h2>Towns we serve in {e(c["name"])}</h2><ul class="towns">{towns}</ul>
-<p>Don't see your town? If it's in {e(c["name"])}, we cover it. Call {SITE["phone"]}.</p>{extra}</article>{aside()}</div></section>
+<h2>{c.get("place_label", "Towns")} we serve in {e(c["name"])}</h2><ul class="towns">{towns}</ul>
+<p>{"Call " + SITE["phone"] + " with your address and we'll confirm." if c.get("state") == "NY" else "Don't see your town? If it's in " + e(c["name"]) + ", we cover it. Call " + SITE["phone"] + "."}</p>{extra}</article>{aside()}</div></section>
 {reviews_block(3)}'''
-    return layout(f"/service-areas/{c['slug']}/", f"Trenchless Sewer Repair in {c['name']}, NJ | Ray Rooter Trenchless",
-                  f"No-dig sewer line repair, pipelining, hydro jetting, camera inspections, and trenchless water line replacement in {c['name']}, NJ, including {', '.join(c['towns'][:4])}. Free estimates.", body, "/service-areas/")
+    return layout(f"/service-areas/{c['slug']}/", f"Trenchless Sewer Repair in {c['name']}, {st} | Ray Rooter Trenchless",
+                  f"No-dig sewer line repair, pipelining, hydro jetting, camera inspections, and trenchless water line replacement in {c['name']}, {st}, including {', '.join(c['towns'][:4])}. Free estimates.", body, "/service-areas/")
 
 def areas_index():
     cards = "".join(f'''<a class="card svc" href="/service-areas/{c["slug"]}/"><h3>{e(c["name"])}</h3><p>{e(", ".join(c["towns"][:6]))}, and more.</p><span class="more">See towns &rarr;</span></a>''' for c in COUNTIES)
     city = "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES)
-    body = page_hero("Service Areas", f"Trenchless sewer and water line service across {SITE['area_line']}.") + f'''
+    body = page_hero("Service Areas", "Trenchless sewer and water line service across northern New Jersey and the New York City boroughs.") + f'''
 <section class="sec dark"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
 <div class="sec-head" style="margin-top:3rem"><h2>Local pages</h2></div><p class="chips center">{city}</p></div></section>'''
-    return layout("/service-areas/", "Service Areas: Bergen, Hudson, Essex, Morris & Passaic County | Ray Rooter Trenchless",
-                  f"Ray Rooter Trenchless serves {SITE['area_line']}, NJ with no-dig sewer repair, hydro jetting, camera inspections, and water line replacement.", body, "/service-areas/")
+    return layout("/service-areas/", "Service Areas: Northern New Jersey & New York City | Ray Rooter Trenchless",
+                  f"Ray Rooter Trenchless serves {SITE['area_line']}, NJ, and the New York City boroughs with no-dig sewer repair, hydro jetting, camera inspections, and water line replacement.", body, "/service-areas/")
 
 def write(path, text):
     p = OUT / (path.strip("/") + "/index.html" if not path.endswith(".html") else path.strip("/"))

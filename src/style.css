@@ -235,3 +235,4 @@ body.menu-open .mobile-call{display:none}
 .steps-dark .step .num{background:var(--orange)}
 .prose a{color:var(--orange-d)}
 .inside{margin:0}.inside img{border-radius:14px;width:100%;aspect-ratio:4/5;object-fit:cover;box-shadow:var(--shadow)}.inside figcaption{font-weight:700;margin-top:10px;text-align:center}
+.svc-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}.svc-photos img{border-radius:12px;width:100%;aspect-ratio:1;object-fit:cover}@media (max-width:640px){.svc-photos{grid-template-columns:1fr 1fr}}

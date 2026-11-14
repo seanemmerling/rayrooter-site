@@ -167,7 +167,6 @@ def home():
              ("2", "Clean the line", "High pressure hydro jetting clears roots, grease, and scale."),
              ("3", "Fix it without digging", "We reline or replace the pipe from small access points, usually in a day."),
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
-    inside_html = "".join(f'<figure class="inside"><img src="{u}" alt="{e(a)}" loading="lazy"><figcaption>{e(cap)}</figcaption></figure>' for u, a, cap in IMAGES["inside"])
     steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
     core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="/services/sewer-line-camera/"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a sewer camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Book a camera inspection &rarr;</span></a>'''
     areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES) + "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES if c["city"] in ("Montclair, NJ", "Nutley, NJ"))
@@ -214,7 +213,7 @@ def home():
 {reviews_block(3)}
 
 <section class="sec alt"><div class="wrap split">
-  <div class="photo"><img src="{IMAGES["street_job"]}" alt="Ray Rooter crew on a trenchless job in North Jersey" loading="lazy"></div>
+  <div class="photo"><img src="{IMAGES["trailer"]}" alt="Ray Rooter Trenchless pipe lining trailer at a customer's home" loading="lazy"></div>
   <div>
     <p class="eyebrow">Local &amp; owner-operated</p>
     <h2>Led by Licensed Master Plumber Steven Ray</h2>
@@ -256,9 +255,15 @@ def figure(s):
     src, alt = s["img"]
     return f'<figure class="svc-photo"><img src="{src}" alt="{e(alt)}" loading="lazy"></figure>'
 
+def photos(s):
+    if not s.get("photos"):
+        return ""
+    imgs = "".join(f'<img src="{u}" alt="{e(a)}" loading="lazy">' for u, a in s["photos"])
+    return f'<h2>Recent jobs</h2><div class="svc-photos">{imgs}</div><p><a href="/gallery/">See all job photos</a></p>'
+
 def service_page(s):
     body = page_hero(s["title"], s["summary"], '<a href="/services/">Services</a>') + f'''
-<section class="sec"><div class="wrap content-grid"><article class="prose">{figure(s)}{render_body(s["body"])}</article>{aside()}</div></section>
+<section class="sec"><div class="wrap content-grid"><article class="prose">{figure(s)}{render_body(s["body"])}{photos(s)}</article>{aside()}</div></section>
 {reviews_block(3)}'''
     return layout(s["path"], s["seo_title"], s["desc"], body, "/services/", canonical=s.get("canonical"))
 
@@ -331,8 +336,8 @@ def trenchless_page():
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-head"><p class="eyebrow">No digging at all</p><h2>We line your sewer from inside the house</h2>
-  <p>The lining machine sets up in your bathroom, basement, or closet and connects to the pipe through an existing cleanout or the toilet flange. Floors are covered, nothing gets excavated, and your yard and driveway are never touched.</p></div>
+  <div class="sec-head"><p class="eyebrow">No digging at all</p><h2>We line your sewer through the openings you already have</h2>
+  <p>The lining machine connects to the pipe at an existing cleanout, the toilet flange, a floor drain, or the manhole. Inside the house, floors are covered. Outside, nothing gets excavated, and your yard and driveway are never touched.</p></div>
   <div class="grid g3 inside-grid">{inside_html}</div>
   <p class="center"><a href="/gallery/">See more job photos</a></p>
 </div></section>
@@ -382,7 +387,7 @@ def about():
     <p>Because we focus on trenchless work, we bring the right equipment to every job and give you a straight answer and a firm price before we start. We are local, licensed, insured, and we stand behind our work.</p>
     <ul class="checks"><li>Licensed Master Plumber on every job</li><li>Licensed &amp; insured</li><li>Free estimates</li><li>Camera footage before and after</li><li>Locally owned and operated in {SITE["base_town"]}</li></ul>
   </div>
-  <div class="photo"><img src="{IMAGES["basement_rig"]}" alt="Trenchless equipment set up in a finished basement with floors protected" loading="lazy"></div>
+  <div class="photo"><img src="{IMAGES["trailer_2"]}" alt="Ray Rooter pipe lining trailer in a residential driveway" loading="lazy"></div>
 </div></section>
 {reviews_block(3)}'''
     return layout("/about-us/", "About Ray Rooter Trenchless | North NJ Sewer Line Specialists",

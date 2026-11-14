@@ -18,6 +18,7 @@ ICONS = {
     "heat": '<path d="M6 21V5M10 21V5M14 21V5M18 21V5M4 21h16M4 5h16"/>',
     "phone": '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
     "check": '<path d="M5 12l4 4L19 6"/>',
+    "stack": '<path d="M10 2v20M14 2v20M7 6h10M7 18h10M17 10h4v4"/>',
     "star": '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" fill="currentColor" stroke="none"/>',
     "sms": '<path d="M4 5h16v11H8l-4 4z"/>',
 }
@@ -43,7 +44,7 @@ def schema():
         "email": SITE["email"],
         "image": SITE["domain"] + IMAGES["og"],
         "address": {"@type": "PostalAddress", "addressLocality": "Midland Park", "addressRegion": "NJ", "addressCountry": "US"},
-        "areaServed": [f"{c} County, NJ" for c in SITE["counties"]] + ["Staten Island, NY", "Manhattan, NY", "Brooklyn, NY", "Queens, NY", "Bronx, NY"],
+        "areaServed": [f"{c} County, NJ" for c in SITE["counties"]] + ["Montclair, NJ", "Nutley, NJ"],
         "aggregateRating": {"@type": "AggregateRating", "ratingValue": SITE["rating"], "reviewCount": SITE["review_count"], "bestRating": "5"},
         "sameAs": [SITE["google_reviews_url"]],
     }
@@ -73,7 +74,7 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head=""):
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="topbar"><div class="wrap">
-  <span>Trenchless no-dig sewer repair &middot; New Jersey &amp; New York</span>
+  <span>Trenchless no-dig sewer repair &middot; Northern New Jersey</span>
   <span>{SITE['hours']} &middot; Licensed &amp; Insured</span>
 </div></div>
 <header class="site-header"><div class="wrap hdr">
@@ -168,11 +169,11 @@ def home():
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
     steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
     core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="/services/sewer-line-camera/"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a sewer camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Book a camera inspection &rarr;</span></a>'''
-    areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES)
+    areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES) + "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES if c["city"] in ("Montclair, NJ", "Nutley, NJ"))
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["hero"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google</p>
-  <h1>Trenchless No Dig Sewer Repair in New Jersey and New York</h1>
+  <h1>Trenchless No Dig Sewer Repair in New Jersey</h1>
   <p class="lead">Fix a broken, root-filled, or collapsing sewer line without digging up your yard, driveway, or basement. Usually done in a day, with camera video before and after.</p>
   <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="/trenchless/">How trenchless repair works</a></div>
   <ul class="trust">{trust}</ul>
@@ -223,8 +224,8 @@ def home():
   </div>
 </div></section>
 '''
-    return layout("/", "Trenchless No Dig Sewer Repair in New Jersey & New York | Ray Rooter Trenchless",
-                  "Trenchless no-dig sewer repair, pipe lining, hydro jetting, and sewer camera inspections in New Jersey and New York. Fix your sewer line without digging up your yard. Free estimates.", body, "/")
+    return layout("/", "Trenchless No Dig Sewer Repair in New Jersey | Ray Rooter Trenchless",
+                  "Trenchless no-dig sewer repair, pipe lining, hydro jetting, and sewer camera inspections in northern New Jersey. Fix your sewer line without digging up your yard. Free estimates.", body, "/")
 
 def render_body(blocks):
     out = []
@@ -299,14 +300,14 @@ def trenchless_page():
                   "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in T["faq"]]}
     svc_schema = {"@context": "https://schema.org", "@type": "Service", "serviceType": "Trenchless sewer repair",
                   "name": "Trenchless No Dig Sewer Repair", "provider": {"@type": "HomeAndConstructionBusiness", "name": SITE["name"], "telephone": "+1-" + SITE["phone"]},
-                  "areaServed": ["Northern New Jersey", "New York City"]}
+                  "areaServed": ["Northern New Jersey"]}
     head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
     trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No trench through your property", "Usually done in a day", "10-year liner warranty", "Free estimates"])
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["basement_rig"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google &middot; {SITE["review_count"]} reviews</p>
   <h1>Trenchless No Dig Sewer Repair</h1>
-  <p class="lead">We fix cracked, root-filled, and broken sewer lines from the inside, without tearing up your lawn, driveway, or finished basement. Serving northern New Jersey and the surrounding New York City boroughs.</p>
+  <p class="lead">We fix cracked, root-filled, and broken sewer lines from the inside, without tearing up your lawn, driveway, or finished basement. Serving northern New Jersey, from Montclair and Nutley to Ridgewood, Wayne, and Hoboken.</p>
   <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="{SITE["sms_href"]}">{icon("sms")}<span>Text us photos</span></a></div>
   <ul class="trust">{trust}</ul>
 </div></section>
@@ -412,7 +413,8 @@ def not_found():
 
 def county_page(c):
     towns = "".join(f'<li>{e(t)}</li>' for t in c["towns"])
-    extra = f'<p>See also: <a href="{c["city_page"]}">our dedicated page for this area</a>.</p>' if c.get("city_page") else ""
+    pages = c.get("city_pages") or ([(c["city_page"], "this area")] if c.get("city_page") else [])
+    extra = ("<p>See also: " + ", ".join(f'<a href="{u}">trenchless sewer repair in {e(n)}</a>' for u, n in pages) + ".</p>") if pages else ""
     blocks = [("p", c["intro"]), ("p", c["local"]),
               ("h2", f"Trenchless services in {c['name']}"),
               ("ul", ["Trenchless sewer line repair and pipelining (CIPP)", "High pressure hydro jetting and root removal",
@@ -430,11 +432,11 @@ def county_page(c):
 def areas_index():
     cards = "".join(f'''<a class="card svc" href="/service-areas/{c["slug"]}/"><h3>{e(c["name"])}</h3><p>{e(", ".join(c["towns"][:6]))}, and more.</p><span class="more">See towns &rarr;</span></a>''' for c in COUNTIES)
     city = "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES)
-    body = page_hero("Service Areas", "Trenchless sewer and water line service across northern New Jersey and the New York City boroughs.") + f'''
+    body = page_hero("Service Areas", "Trenchless sewer and water line service across northern New Jersey.") + f'''
 <section class="sec dark"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
 <div class="sec-head" style="margin-top:3rem"><h2>Local pages</h2></div><p class="chips center">{city}</p></div></section>'''
-    return layout("/service-areas/", "Service Areas: Northern New Jersey & New York City | Ray Rooter Trenchless",
-                  f"Ray Rooter Trenchless serves {SITE['area_line']}, NJ, and the New York City boroughs with no-dig sewer repair, hydro jetting, camera inspections, and water line replacement.", body, "/service-areas/")
+    return layout("/service-areas/", "Service Areas: Bergen, Essex, Hudson, Morris, Passaic & Sussex County NJ | Ray Rooter Trenchless",
+                  f"Ray Rooter Trenchless serves {SITE['area_line']}, NJ with no-dig sewer repair, hydro jetting, camera inspections, and water line replacement.", body, "/service-areas/")
 
 def write(path, text):
     p = OUT / (path.strip("/") + "/index.html" if not path.endswith(".html") else path.strip("/"))

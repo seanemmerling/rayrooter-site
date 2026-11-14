@@ -9,9 +9,9 @@ SITE = {
     "email": "steven@rayrooter.com",
     "hours": "Open 7 AM to 7 PM",
     "base_town": "Midland Park, NJ",
-    "counties": ["Bergen", "Hudson", "Essex", "Morris", "Passaic"],
-    "area_line": "Bergen, Hudson, Essex, Morris, and Passaic County",
-    "region": "New Jersey and New York",
+    "counties": ["Bergen", "Hudson", "Essex", "Morris", "Passaic", "Sussex"],
+    "area_line": "Bergen, Hudson, Essex, Morris, Passaic, and Sussex County",
+    "region": "Northern New Jersey",
     "google_reviews_url": "https://maps.google.com/?cid=5373159156397854594",
     "review_count": 55,
     "rating": "4.9",
@@ -47,7 +47,7 @@ SERVICES = [
         "nav": "Trenchless Sewer Repair",
         "title": "Trenchless Sewer Line Repair & Pipelining",
         "seo_title": "Trenchless Sewer Repair & Pipelining in North NJ | Ray Rooter Trenchless",
-        "desc": "No-dig sewer line repair with cured-in-place pipe lining (CIPP). Fix roots, cracks, and missing pipe without excavating. Bergen, Hudson, Essex, Morris, and Passaic County NJ.",
+        "desc": "No-dig sewer line repair with cured-in-place pipe lining (CIPP). Fix roots, cracks, and missing pipe without excavating. Bergen, Hudson, Essex, Morris, Passaic, and Sussex County NJ.",
         "icon": "pipe",
         "img": ("/assets/img/basement-rig.webp", "Trenchless sewer equipment set up in a finished basement"),
         "summary": "Line the old pipe from the inside. No trench across your yard, driveway, or basement floor.",
@@ -72,7 +72,7 @@ SERVICES = [
         "nav": "Trenchless Water Line Replacement",
         "title": "Trenchless Water Line Replacement",
         "seo_title": "Trenchless Water Line Replacement in North NJ | Ray Rooter Trenchless",
-        "desc": "Replace your water service line without digging a trench. Fix low pressure and rusty water, usually in one day. Bergen, Hudson, Essex, Morris, and Passaic County NJ.",
+        "desc": "Replace your water service line without digging a trench. Fix low pressure and rusty water, usually in one day. Bergen, Hudson, Essex, Morris, Passaic, and Sussex County NJ.",
         "icon": "water",
         "img": ("/assets/img/street-job-2.webp", "Trenchless job site on a residential street"),
         "summary": "New water service line from the street to your house, pulled underground. No trench.",
@@ -99,7 +99,7 @@ SERVICES = [
         "nav": "Hydro Jetting",
         "title": "High Pressure Hydro Jetting",
         "seo_title": "High Pressure Hydro Jetting in North NJ | Ray Rooter Trenchless",
-        "desc": "High pressure hydro jetting clears tree roots, grease, and scale from sewer lines in Bergen, Hudson, Essex, Morris, and Passaic County NJ. Free estimates.",
+        "desc": "High pressure hydro jetting clears tree roots, grease, and scale from sewer lines in Bergen, Hudson, Essex, Morris, Passaic, and Sussex County NJ. Free estimates.",
         "icon": "jet",
         "img": ("/assets/img/street-job.webp", "Ray Rooter crew working at a home in North Jersey"),
         "summary": "Scour roots, grease, and scale off the pipe wall and restore full flow.",
@@ -120,7 +120,7 @@ SERVICES = [
         "nav": "Sewer Camera Inspection",
         "title": "Sewer Camera Inspection",
         "seo_title": "Sewer Camera Inspection in North NJ | Ray Rooter Trenchless",
-        "desc": "HD sewer camera inspections to find roots, breaks, and bellies. Pre-purchase sewer inspections for home buyers in Bergen, Hudson, Essex, Morris, and Passaic County NJ.",
+        "desc": "HD sewer camera inspections to find roots, breaks, and bellies. Pre-purchase sewer inspections for home buyers in Bergen, Hudson, Essex, Morris, Passaic, and Sussex County NJ.",
         "icon": "camera",
         "summary": "See exactly what's wrong before anyone quotes you a repair.",
         "body": [
@@ -140,7 +140,7 @@ SERVICES = [
         "nav": "Main Sewer Line Cleaning",
         "title": "Main Sewer Line & Drain Cleaning",
         "seo_title": "Main Sewer Line & Drain Cleaning in North NJ | Ray Rooter Trenchless",
-        "desc": "Main sewer line backed up? We clear main lines and building drains with hydro jetting and confirm the fix with an HD camera. Bergen, Hudson, Essex, Morris, and Passaic County NJ.",
+        "desc": "Main sewer line backed up? We clear main lines and building drains with hydro jetting and confirm the fix with an HD camera. Bergen, Hudson, Essex, Morris, Passaic, and Sussex County NJ.",
         "icon": "drain",
         "summary": "Backups in more than one fixture usually mean the main line. We clear it and show you why it happened.",
         "body": [
@@ -155,11 +155,40 @@ SERVICES = [
         ],
     },
     {
+        "path": "/services/roof-drain-soil-stack-lining/",
+        "nav": "Roof Drain & Soil Stack Lining",
+        "title": "Roof Drain & Soil Stack Lining",
+        "seo_title": "Roof Drain & Soil Stack Lining in North NJ | Ray Rooter Trenchless",
+        "desc": "Trenchless lining for cast iron soil stacks, drain stacks, and roof drains in homes and commercial buildings. Stop leaks without opening walls and ceilings. Northern NJ.",
+        "icon": "stack",
+        "summary": "Reline cracked cast iron stacks and leaking roof drains without opening up walls and ceilings.",
+        "body": [
+            ("p", "Cast iron soil stacks, drain stacks, and roof drain leaders run vertically through the walls and chases of homes, apartment buildings, and commercial properties. After decades in service they corrode from the inside, scale up, crack, and develop pinhole leaks, often showing up as stains, odors, or water damage on the floors below."),
+            ("p", "Replacing a stack the traditional way means opening walls and ceilings on every floor it passes through, then patching, painting, and cleaning up afterward. Trenchless lining renews the stack from the inside instead: we clean the pipe, then install a cured-in-place liner that forms a new, seamless pipe within the old one."),
+            ("h2", "Signs your stack or roof drain is failing"),
+            ("ul", ["Water stains or leaks on ceilings and walls along the stack",
+                    "Sewer odor inside the building",
+                    "Rust, cracks, or pinholes on exposed cast iron",
+                    "Slow drains on upper floors",
+                    "Roof drains that back up or leak into the building during storms"]),
+            ("h2", "How we do it"),
+            ("ol", ["Run an HD camera through the stack or roof drain to locate cracks, corrosion, and blockages.",
+                    "Descale and clean the pipe with high pressure hydro jetting.",
+                    "Install a cured-in-place liner through an existing access point.",
+                    "Camera the finished pipe so you can see the result."]),
+            ("h2", "Why line instead of replace"),
+            ("ul", ["No opening walls and ceilings on every floor",
+                    "Minimal disruption to tenants, residents, and businesses",
+                    "Seamless pipe with no joints to leak",
+                    "Works for residential, multi-family, and commercial buildings"]),
+        ],
+    },
+    {
         "path": "/services/gas-line-services/",
         "nav": "Gas Line Service",
         "title": "Gas Line Service",
         "seo_title": "Gas Line Installation & Repair in North NJ | Ray Rooter Trenchless",
-        "desc": "Licensed gas line installation and repair in Bergen, Hudson, Essex, Morris, and Passaic County NJ, including lines for grills, generators, and appliances.",
+        "desc": "Licensed gas line installation and repair in Bergen, Hudson, Essex, Morris, Passaic, and Sussex County NJ, including lines for grills, generators, and appliances.",
         "icon": "gas",
         "summary": "Licensed gas line installation and repair, including grills, generators, and appliances.",
         "body": [
@@ -172,22 +201,38 @@ SERVICES = [
         "nav": "Heating Systems",
         "title": "Heating Systems",
         "seo_title": "Boiler & Heating System Service in North NJ | Ray Rooter Trenchless",
-        "desc": "Boiler and heating system service in Bergen, Hudson, Essex, Morris, and Passaic County NJ from a Licensed Master Plumber.",
+        "desc": "Boiler and heating system service in Bergen, Hudson, Essex, Morris, Passaic, and Sussex County NJ from a Licensed Master Plumber.",
         "icon": "heat",
         "summary": "Boiler and heating system service from a Licensed Master Plumber.",
         "body": [
-            ("p", "We service boilers and hydronic heating systems for homes in Bergen, Hudson, Essex, Morris, and Passaic County. Call us to describe the problem and we'll tell you whether it's a job we can take on."),
+            ("p", "We service boilers and hydronic heating systems for homes in Bergen, Hudson, Essex, Morris, Passaic, and Sussex County. Call us to describe the problem and we'll tell you whether it's a job we can take on."),
         ],
     },
 ]
 
 CITIES = [
     {
+        "path": "/services/trenchless-sewer-repair-montclair-nj/",
+        "city": "Montclair, NJ",
+        "seo_title": "Trenchless Sewer Repair in Montclair, NJ | Ray Rooter Trenchless",
+        "desc": "No-dig trenchless sewer repair and pipe lining in Montclair, NJ. Fix root-filled, cracked clay and cast iron sewer lines without digging up your yard or driveway. Free estimates.",
+        "intro": "Many of Montclair's homes date to the early 1900s, and a lot of them still run on their original clay or cast iron sewer laterals. Add Montclair's big, mature street trees, and roots in the sewer line are one of the most common problems we see in town.",
+        "local": "Montclair properties often have finished basements, stone walls, slate walks, and established landscaping that nobody wants torn up. We camera the line, clear the roots with hydro jetting, and line the pipe in place, usually in a single day, without excavating.",
+    },
+    {
+        "path": "/services/trenchless-sewer-repair-nutley-nj/",
+        "city": "Nutley, NJ",
+        "seo_title": "Trenchless Sewer Repair in Nutley, NJ | Ray Rooter Trenchless",
+        "desc": "No-dig trenchless sewer repair and pipe lining in Nutley, NJ. Fix roots, cracks, and broken sewer lines without digging up your yard, driveway, or basement. Free estimates.",
+        "intro": "Nutley's tree-lined streets and older housing stock mean a lot of aging clay and cast iron sewer laterals, and a lot of tree roots looking for a way in. Recurring backups, slow drains, and root-clogged mains are calls we get from Nutley homeowners all the time.",
+        "local": "Instead of digging up your front yard, driveway, or sidewalk, we line the existing pipe from the inside through a cleanout. You get a seamless, root-proof sewer line, camera video before and after, and your property stays intact.",
+    },
+    {
         "path": "/services/trenchless-sewer-repair-nj/",
         "city": "New Jersey",
         "seo_title": "Trenchless Sewer Repair in New Jersey | Ray Rooter Trenchless",
         "desc": "No-dig trenchless sewer repair, replacement, and pipelining across North Jersey. Fix roots, breaks, and collapsed pipe without excavating. Free estimates.",
-        "intro": "We repair and replace sewer lines without excavation across North Jersey, across Bergen, Hudson, Essex, Morris, and Passaic County. Most of the region's housing stock was built with cast iron and clay sewer lines that are now 50 to 100 years old, and roots, corrosion, and settling have taken their toll.",
+        "intro": "We repair and replace sewer lines without excavation across North Jersey, across Bergen, Hudson, Essex, Morris, Passaic, and Sussex County. Most of the region's housing stock was built with cast iron and clay sewer lines that are now 50 to 100 years old, and roots, corrosion, and settling have taken their toll.",
         "local": "Whether your line runs under a finished basement, a paved driveway, a mature tree, or the street, trenchless pipelining fixes it from the inside, usually in a single day.",
     },
     {
@@ -234,9 +279,10 @@ COUNTIES = [
     },
     {
         "slug": "essex-county-nj", "name": "Essex County",
-        "towns": ["Montclair", "West Orange", "Livingston", "Bloomfield", "Nutley", "Belleville", "Verona", "Cedar Grove", "Caldwell",
+        "towns": ["Montclair", "Nutley", "West Orange", "Livingston", "Bloomfield", "Belleville", "Verona", "Cedar Grove", "Caldwell",
                   "West Caldwell", "Glen Ridge", "Maplewood", "South Orange", "Millburn", "Roseland", "Essex Fells", "East Orange", "Newark"],
-        "intro": "From the older homes of Montclair, Glen Ridge, Maplewood, and South Orange to multi-family buildings in Newark and the Oranges, Essex County has a lot of original clay and cast iron sewer pipe still in service.",
+        "city_pages": [("/services/trenchless-sewer-repair-montclair-nj/", "Montclair"), ("/services/trenchless-sewer-repair-nutley-nj/", "Nutley")],
+        "intro": "From the older homes of Montclair, Nutley, Glen Ridge, Maplewood, and South Orange to multi-family buildings in Newark and the Oranges, Essex County has a lot of original clay and cast iron sewer pipe still in service.",
         "local": "Many of these homes sit on finished basements, stone walls, and mature landscaping that nobody wants dug up. We camera the line, jet it clean, and reline it in place.",
     },
     {
@@ -257,10 +303,11 @@ COUNTIES = [
 ]
 
 COUNTIES.append({
-    "slug": "new-york-city", "name": "New York City", "state": "NY", "place_label": "Boroughs",
-    "towns": ["Staten Island", "Manhattan", "Brooklyn", "Queens", "The Bronx"],
-    "intro": "New York City's rowhouses, brownstones, and multi-family buildings sit on some of the oldest sewer laterals in the region, many running under basements, stoops, sidewalks, and the street to the city main.",
-    "local": "Opening a sidewalk or street in the city means permits, restoration, and days of disruption. Trenchless lining renews the line from inside through an existing cleanout, so in most cases nothing gets dug up.",
+    "slug": "sussex-county-nj", "name": "Sussex County",
+    "towns": ["Newton", "Sparta", "Hopatcong", "Vernon", "Franklin", "Hardyston", "Hamburg", "Andover", "Byram",
+              "Stanhope", "Ogdensburg", "Wantage", "Sussex", "Lafayette", "Frankford", "Fredon", "Green", "Hampton"],
+    "intro": "Sussex County mixes town centers on public sewer, like Newton, Hopatcong, and parts of Sparta, with lake communities and rural homes on long service lines that run under wooded lots, rock, and long driveways.",
+    "local": "Long runs are exactly where trenchless pays off. We camera the line, clear it with hydro jetting, and line or replace sewer and water service lines from small access points instead of trenching the whole length.",
 })
 
 # Old WordPress URLs that should 301 to a new page (configure in render.yaml routes).
@@ -286,14 +333,14 @@ REDIRECTS = {
 
 # Sales priority: trenchless first, then hydro jetting and sewer camera work.
 _PRIORITY = ["/services/pipelining/", "/services/high-pressure-sewer-jetting/", "/services/sewer-line-camera/",
-             "/services/trenchless-water-line-replacement/", "/services/drain-cleaning-repairs/",
+             "/services/roof-drain-soil-stack-lining/", "/services/trenchless-water-line-replacement/", "/services/drain-cleaning-repairs/",
              "/services/gas-line-services/", "/services/heating-boilers-hot-water-heater/"]
 SERVICES.sort(key=lambda s: _PRIORITY.index(s["path"]))
 
 # Dedicated landing page at /trenchless/
 TRENCHLESS = {
-    "seo_title": "Trenchless No Dig Sewer Repair in New Jersey & New York | Ray Rooter Trenchless",
-    "desc": "No-dig trenchless sewer repair and pipe lining in New Jersey and New York. Fix roots, cracks, and broken sewer lines without digging up your yard, driveway, or basement. Free estimates.",
+    "seo_title": "Trenchless No Dig Sewer Repair in New Jersey | Ray Rooter Trenchless",
+    "desc": "No-dig trenchless sewer repair and pipe lining in northern New Jersey. Fix roots, cracks, and broken sewer lines without digging up your yard, driveway, or basement. Free estimates.",
     "signs": ["Sewage backing up into the basement or a floor drain",
               "More than one drain slow or gurgling at the same time",
               "Recurring clogs that come back after snaking",
@@ -320,7 +367,7 @@ TRENCHLESS = {
         ("Do you work with homeowners insurance?",
          "We can provide the camera footage and documentation your insurance company asks for when you file a claim."),
         ("What areas do you serve?",
-         "Northern New Jersey, including Bergen, Hudson, Essex, Morris, and Passaic Counties, and the surrounding New York City boroughs. Call with your address and we'll confirm."),
+         "Northern New Jersey: Bergen, Hudson, Essex, Morris, Passaic, and Sussex Counties, including Montclair, Nutley, Ridgewood, Wayne, and Hoboken. Call with your address and we'll confirm."),
     ],
     "review_names": ["menthe alow", "Kenneth Hughes", "Andrew Melikov", "Kirk Prichard", "Teresa Yi-Bourdett", "John Caruso"],
 }

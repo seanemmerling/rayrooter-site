@@ -49,20 +49,37 @@ def analytics_head(path, title):
     dl = json.dumps({"page_type": page_type(path), "page_title": title.split(" | ")[0]})
     return (f'<script async src="https://www.googletagmanager.com/gtag/js?id={gid}"></script>'
             f'<script>window.dataLayer=window.dataLayer||[];dataLayer.push({dl});'
-            f'function gtag(){{dataLayer.push(arguments);}}gtag("js",new Date());gtag("config","{gid}");</script>')
+            f'function gtag(){{dataLayer.push(arguments);}}gtag("js",new Date());'
+            f'gtag("config","{gid}",{{page_type:"{page_type(path)}"}});</script>')
 
 TRACK_JS = """<script>
-document.addEventListener('click',function(e){
-  var a=e.target.closest('a'); if(!a) return;
-  var h=a.getAttribute('href')||'', ev=null;
-  if(h.indexOf('tel:')===0) ev='phone_click';
-  else if(h.indexOf('sms:')===0) ev='text_click';
-  else if(h.indexOf('mailto:')===0) ev='email_click';
-  else if(h.indexOf('maps.google.com')>-1) ev='google_reviews_click';
-  if(!ev) return;
-  var loc=a.closest('.mobile-call')||a.classList.contains('mobile-call')?'sticky_bar':a.closest('.site-header')?'header':a.closest('.hero,.page-hero')?'hero':a.closest('.cta-band')?'cta_band':a.closest('aside')?'sidebar':a.closest('footer')?'footer':'body';
-  if(typeof gtag==='function') gtag('event',ev,{link_location:loc,link_text:(a.innerText||'').trim().slice(0,60),page_type:(window.dataLayer[0]||{}).page_type});
-});
+(function(){
+  var pt=(window.dataLayer&&window.dataLayer[0]||{}).page_type||'other';
+  function where(a){
+    if(a.classList.contains('mobile-call')) return 'sticky_mobile_bar';
+    if(a.closest('.site-header')) return 'header';
+    if(a.closest('.hero,.page-hero')) return 'hero';
+    if(a.closest('.cta-band')) return 'bottom_cta_band';
+    if(a.closest('.side-cta')) return 'sidebar_estimate_box';
+    if(a.closest('.svc-cta')) return 'not_sure_card';
+    if(a.closest('.contact-card')) return 'contact_page_card';
+    if(a.closest('footer')) return 'footer';
+    return 'in_content';
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a'); if(!a) return;
+    var h=a.getAttribute('href')||'', ev=null;
+    if(h.indexOf('tel:')===0) ev='phone_click';
+    else if(h.indexOf('sms:')===0) ev='text_click';
+    else if(h.indexOf('mailto:')===0) ev='email_click';
+    else if(h.indexOf('maps.google.com')>-1) ev='google_reviews_click';
+    if(!ev) return;
+    var p={cta_location:where(a), cta_text:(a.innerText||'').replace(/\\s+/g,' ').trim().slice(0,60),
+           page_type:pt, page_path:location.pathname};
+    if(typeof gtag==='function') gtag('event',ev,p);
+    window.dataLayer.push(Object.assign({event:'lead_'+ev},p));
+  });
+})();
 </script>"""
 
 def schema():

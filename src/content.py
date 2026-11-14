@@ -11,7 +11,8 @@ SITE = {
     "base_town": "Midland Park, NJ",
     "counties": ["Bergen", "Hudson", "Essex", "Morris", "Passaic"],
     "area_line": "Bergen, Hudson, Essex, Morris, and Passaic County",
-    "google_reviews_url": "https://share.google/INZwzINYybD6cB13O",
+    "google_reviews_url": "https://maps.google.com/?cid=5373159156397854594",
+    "review_count": 55,
     "rating": "4.9",
 }
 
@@ -28,15 +29,13 @@ IMAGES = {
                                    "street-cones.webp", "basement-rig-3.webp", "trailer.webp", "tight-basement.webp"]],
 }
 
-# Real Google reviews (text as posted). Keep in sync with the Google Business Profile.
-REVIEWS = [
-    ("Serene Namm", "Steve and his team gave us a free estimate and told us he was able to install the pipe liner for our sewer. Steve explained everything and showed us videos along the way. They did a great job!"),
-    ("menthe alow", "Couldn't ask more of Steve Ray & his crew. Incredible work they have performed at our house. Not only is our entire sewer line like new - but there was zero excavation, and zero damage to our finished basement despite the very tight space available..."),
-    ("Andrea Plitch", "Ray came by as promised and on time even in the snow. He ran a camera through our sewer pipe to diagnose the problem Roto-rooter said would cost us $20k and showed us nothing was wrong. So in moments saved us 20K..."),
-    ("Luis Urena", "I had a busted cleanout that was hanging on by a thread and it was my biggest worry all year. Steve and his team were amazing, they fixes the issue and gave me the peace of mind I had been looking for... These guys are top tier professionals!"),
-    ("Tom Lawrence", "Steve has been doing periodic maintenance pressure cleaning on our 300 foot sewer that is shared by four houses on a private street in Bergen County... Steve came along and recommended a high pressure water treatment that turned out to be less wear and tear and much more effective in clearing out the roots."),
-    ("G Nizzle", "Steve and his crew are the best. So knowledgeable, quick, quiet, good price. Would 100% request them again but don't think we will ever have to since he fixed it all."),
-]
+# Google reviews live in src/reviews.json (snapshot of the Business Profile).
+import json as _json, pathlib as _pl
+_R = _json.loads((_pl.Path(__file__).parent / "reviews.json").read_text(encoding="utf-8"))
+REVIEWS = _R["reviews"]          # [name, stars, relative_date, text]
+REVIEWS_CAPTURED = _R["captured"]
+# Shown first on the homepage and service pages (trenchless/sewer-focused).
+FEATURED_REVIEWERS = ["menthe alow", "Andrea Plitch", "Kenneth Hughes", "Kirk Prichard", "Teresa Yi-Bourdett", "Serene Namm"]
 
 # slug -> page. "path" keeps every URL from the old WordPress site.
 SERVICES = [

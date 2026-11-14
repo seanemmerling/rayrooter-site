@@ -1,7 +1,8 @@
 """Builds the static site into public/. Run: python3 src/build.py"""
 import html, json, pathlib, shutil, sys
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from content import SITE, IMAGES, REVIEWS, SERVICES, CITIES, COUNTIES, REDIRECTS
+from content import SITE, IMAGES, REVIEWS, REVIEWS_CAPTURED, FEATURED_REVIEWERS, SERVICES, CITIES, COUNTIES, REDIRECTS
+import re, datetime
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "public"
@@ -43,7 +44,7 @@ def schema():
         "image": SITE["domain"] + IMAGES["og"],
         "address": {"@type": "PostalAddress", "addressLocality": "Midland Park", "addressRegion": "NJ", "addressCountry": "US"},
         "areaServed": [f"{c} County, NJ" for c in SITE["counties"]],
-        "aggregateRating": {"@type": "AggregateRating", "ratingValue": SITE["rating"], "bestRating": "5"},
+        "aggregateRating": {"@type": "AggregateRating", "ratingValue": SITE["rating"], "reviewCount": SITE["review_count"], "bestRating": "5"},
         "sameAs": [SITE["google_reviews_url"]],
     }
 
@@ -122,12 +123,38 @@ def service_card(s):
   <h3>{e(s["nav"])}</h3><p>{e(s["summary"])}</p><span class="more">Learn more &rarr;</span>
 </a>'''
 
-def reviews_block(limit=6, heading=True):
-    cards = "".join(f'<figure class="card review">{stars()}<blockquote>{e(t)}</blockquote><figcaption>{e(n)} <span>Google review</span></figcaption></figure>' for n, t in REVIEWS[:limit])
-    head = f'''<div class="sec-head"><p class="eyebrow">{stars()} {SITE["rating"]} on Google</p><h2>What North Jersey homeowners say</h2></div>''' if heading else ""
+def review_year(rel):
+    base = datetime.date.fromisoformat(REVIEWS_CAPTURED)
+    m = re.search(r"(\d+|an?)\s+(day|week|month|year)", rel)
+    if not m:
+        return base.year
+    n = 1 if m.group(1) in ("a", "an") else int(m.group(1))
+    days = {"day": 1, "week": 7, "month": 30, "year": 365}[m.group(2)] * n
+    return (base - datetime.timedelta(days=days)).year
+
+def review_card(r, clamp=True):
+    name, s, rel, text = r
+    initial = e(name.strip()[0].upper())
+    cls = "card review clamp" if clamp else "card review"
+    return f'''<figure class="{cls}">
+  <div class="rv-head"><span class="avatar">{initial}</span><div><figcaption>{e(name)}</figcaption><span class="rv-meta">{stars(s)} <span>{review_year(rel)} &middot; Google</span></span></div><svg class="g" viewBox="0 0 24 24" aria-label="Google review"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.2a5.3 5.3 0 0 1-2.3 3.5v2.9h3.7c2.2-2 3.4-5 3.4-8.5z"/><path fill="#34A853" d="M12 23.5c3.1 0 5.7-1 7.6-2.8l-3.7-2.9c-1 .7-2.4 1.1-3.9 1.1-3 0-5.5-2-6.4-4.7H1.8v3A11.5 11.5 0 0 0 12 23.5z"/><path fill="#FBBC05" d="M5.6 14.2a6.9 6.9 0 0 1 0-4.4v-3H1.8a11.5 11.5 0 0 0 0 10.4z"/><path fill="#EA4335" d="M12 5.1c1.7 0 3.2.6 4.4 1.7l3.3-3.3A11.5 11.5 0 0 0 1.8 6.8l3.8 3c.9-2.8 3.4-4.7 6.4-4.7z"/></svg></div>
+  <blockquote>{e(text)}</blockquote>
+</figure>'''
+
+def rating_summary():
+    return f'''<div class="rating-sum"><span class="big">{SITE["rating"]}</span><div>{stars()}<p>{SITE["review_count"]} Google reviews</p></div>
+<a class="btn btn-outline" href="{SITE["google_reviews_url"]}" rel="noopener" target="_blank">View on Google Maps</a></div>'''
+
+def featured():
+    by = {r[0]: r for r in REVIEWS}
+    return [by[n] for n in FEATURED_REVIEWERS if n in by]
+
+def reviews_block(limit=3, heading=True):
+    cards = "".join(review_card(r) for r in featured()[:limit])
+    head = f'''<div class="sec-head"><p class="eyebrow">Reviews</p><h2>What North Jersey homeowners say</h2></div>{rating_summary()}''' if heading else ""
     return f'''<section class="sec reviews-sec"><div class="wrap">{head}
 <div class="grid g3">{cards}</div>
-<p class="center"><a class="btn btn-outline" href="{SITE["google_reviews_url"]}" rel="noopener" target="_blank">Read all reviews on Google</a></p>
+<p class="center"><a class="btn btn-primary" href="/clients-one/">Read all {SITE["review_count"]} reviews</a></p>
 </div></section>'''
 
 def home():
@@ -148,7 +175,7 @@ def home():
   <ul class="trust">{trust}</ul>
 </div></section>
 
-<section class="sec"><div class="wrap">
+<section class="sec dark"><div class="wrap">
   <div class="sec-head"><p class="eyebrow">What we do</p><h2>Trenchless specialists, not general plumbers</h2>
   <p>We focus on one thing: diagnosing and fixing sewer and water lines with the least possible disruption to your property.</p></div>
   <div class="grid g3 svc-grid">{core}</div>
@@ -248,7 +275,7 @@ def services_index(path):
     cards = "".join(service_card(s) for s in SERVICES)
     areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES)
     body = page_hero("Our Services", "Trenchless sewer and water line repair, hydro jetting, and camera inspections.") + f'''
-<section class="sec"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
+<section class="sec dark"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
 <div class="sec-head" style="margin-top:3rem"><h2>Service areas</h2></div><p class="chips center">{areas}</p></div></section>'''
     return layout(path, "Trenchless Sewer & Water Line Services | Ray Rooter Trenchless",
                   "Trenchless sewer repair, pipelining, hydro jetting, sewer camera inspection, and trenchless water line replacement in North NJ.", body, "/services/")
@@ -283,9 +310,12 @@ def contact(path):
                   f"Call {SITE['phone']} for a free estimate on trenchless sewer repair, hydro jetting, or sewer camera inspection. {SITE['hours']}.", body, "/contact-us/")
 
 def reviews_page():
-    body = page_hero("Customer Reviews", f"Rated {SITE['rating']} stars on Google by North Jersey homeowners.") + reviews_block(len(REVIEWS), heading=False)
+    cards = "".join(review_card(r, clamp=False) for r in REVIEWS)
+    body = page_hero("Customer Reviews", f"Rated {SITE['rating']} stars from {SITE['review_count']} Google reviews.") + f'''
+<section class="sec"><div class="wrap">{rating_summary()}<div class="masonry">{cards}</div>
+<p class="center small-note">Reviews shown as posted on our Google Business Profile.</p></div></section>'''
     return layout("/clients-one/", "Customer Reviews | Ray Rooter Trenchless",
-                  "Read Google reviews from North Jersey homeowners who used Ray Rooter Trenchless for sewer repair, pipelining, jetting, and camera inspections.", body, "/clients-one/")
+                  f"Read {SITE['review_count']} Google reviews from North Jersey homeowners who used Ray Rooter Trenchless for sewer repair, pipelining, jetting, and camera inspections.", body, "/clients-one/")
 
 def gallery():
     imgs = "".join(f'<img src="{u}" alt="Ray Rooter Trenchless job photo" loading="lazy">' for u in IMAGES["gallery"])
@@ -316,7 +346,7 @@ def areas_index():
     cards = "".join(f'''<a class="card svc" href="/service-areas/{c["slug"]}/"><h3>{e(c["name"])}</h3><p>{e(", ".join(c["towns"][:6]))}, and more.</p><span class="more">See towns &rarr;</span></a>''' for c in COUNTIES)
     city = "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES)
     body = page_hero("Service Areas", f"Trenchless sewer and water line service across {SITE['area_line']}.") + f'''
-<section class="sec"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
+<section class="sec dark"><div class="wrap"><div class="grid g3 svc-grid">{cards}</div>
 <div class="sec-head" style="margin-top:3rem"><h2>Local pages</h2></div><p class="chips center">{city}</p></div></section>'''
     return layout("/service-areas/", "Service Areas: Bergen, Hudson, Essex, Morris & Passaic County | Ray Rooter Trenchless",
                   f"Ray Rooter Trenchless serves {SITE['area_line']}, NJ with no-dig sewer repair, hydro jetting, camera inspections, and water line replacement.", body, "/service-areas/")

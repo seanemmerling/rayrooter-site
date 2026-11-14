@@ -73,7 +73,7 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head=""):
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="topbar"><div class="wrap">
-  <span>Trenchless sewer &amp; water line specialists &middot; {e(SITE['area_line'])}</span>
+  <span>Trenchless no-dig sewer repair &middot; New York &amp; New Jersey</span>
   <span>{SITE['hours']} &middot; Licensed &amp; Insured</span>
 </div></div>
 <header class="site-header"><div class="wrap hdr">

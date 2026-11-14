@@ -1,0 +1,62 @@
+services:
+  - type: web
+    runtime: static
+    name: rayrooter-site
+    buildCommand: python3 src/build.py
+    staticPublishPath: public
+    routes:
+      - type: redirect
+        source: /hoboken-trenchless-sewer-repair/
+        destination: /services/trenchless-sewer-repair-hoboken/
+      - type: redirect
+        source: /services/plumbing-services/
+        destination: /services/trenchless-sewer-repair-nj/
+      - type: redirect
+        source: /blog/
+        destination: /services/
+      - type: redirect
+        source: /our-plumber/
+        destination: /about-us/
+      - type: redirect
+        source: /prices/
+        destination: /contact-us/
+      - type: redirect
+        source: /coupons/
+        destination: /contact-us/
+      - type: redirect
+        source: /payment-method/
+        destination: /contact-us/
+      - type: redirect
+        source: /transparency/
+        destination: /about-us/
+      - type: redirect
+        source: /frequently-ask-question/
+        destination: /
+      - type: redirect
+        source: /career/
+        destination: /about-us/
+      - type: redirect
+        source: /shop/
+        destination: /
+      - type: redirect
+        source: /cart/
+        destination: /
+      - type: redirect
+        source: /checkout/
+        destination: /
+      - type: redirect
+        source: /sample-page/
+        destination: /
+      - type: redirect
+        source: /lightbox/
+        destination: /
+      - type: redirect
+        source: /full-width/
+        destination: /
+      - type: redirect
+        source: /no-filter/
+        destination: /
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=604800

@@ -22,7 +22,7 @@ IMG = "/assets/img/"
 IMAGES = {
     "hero": IMG + "hero.webp",            # truck + jetter, NYC skyline
     "og": IMG + "og.jpg",
-    "logo": IMG + "logo.png",
+    "logo": IMG + "logo.png?v=2",
     "favicon": IMG + "favicon.png",
     "street_job": IMG + "street-job.webp",
     "basement_rig": IMG + "basement-rig.webp",

@@ -177,7 +177,7 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head="", h
 {body}
 </main>
 <section class="cta-band"><div class="wrap cta-inner">
-  <div><h2>Sewer or water line problem?</h2><p>Talk to a trenchless specialist today. Free estimates, camera inspection available. {SITE['hours']}.</p></div>
+  <div><h2>Sewer or water line problem?</h2><p>Call or text for a free estimate. Camera inspections available. {SITE['hours']}.</p></div>
   <div class="cta-actions">{call_btn("btn btn-light")}<a class="btn btn-ghost-light" href="{SITE['sms_href']}">{icon("sms")}<span>Text us</span></a></div>
 </div></section>
 <footer class="site-footer"><div class="wrap foot">
@@ -253,8 +253,8 @@ def reviews_block(limit=3, heading=True):
 def cred_bar():
     items = [("Licensed Master Plumber", "Owner on every job site"),
              ("Licensed &amp; insured", "Residential &amp; commercial"),
-             (f'{SITE["rating"]} on Google', f'{SITE["review_count"]} verified reviews'),
-             ("Camera-verified work", "Video before and after")]
+             (f'{SITE["rating"]} on Google', f'{SITE["review_count"]} Google reviews'),
+             ("Camera inspections", "Video before and after")]
     cells = "".join(f'<li><b>{t}</b><span>{d}</span></li>' for t, d in items)
     return f'<section class="cred" aria-label="Credentials"><ul class="wrap cred-grid">{cells}</ul></section>'
 
@@ -263,12 +263,12 @@ def num(n):
 
 def home():
     trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging up your yard", "Owner &amp; Licensed Master Plumber on every job site", "Free estimates", "Licensed &amp; insured"])
-    steps = [("1", "Camera inspection", "We run an HD camera through the line and show you exactly what's wrong."),
+    steps = [("1", "Camera inspection", "We run an HD camera through the line and show you what's wrong."),
              ("2", "Clean the line", "High pressure hydro jetting clears roots, grease, and scale."),
              ("3", "Fix it without digging", "We reline or replace the pipe from small access points, usually in a day."),
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
     steps_html = "".join(f'<li class="step"><span class="num">{num(n)}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
-    core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="/services/sewer-line-camera/"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a sewer camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Book a camera inspection &rarr;</span></a>'''
+    core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="/services/sewer-line-camera/"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a sewer camera inspection. You'll see the condition of the line before we quote a repair.</p><span class="more">Book a camera inspection &rarr;</span></a>'''
     areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES) + "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES if c["city"] in ("Montclair, NJ", "Nutley, NJ"))
     segs = [("Homeowners", "Sewer and water lines repaired without tearing up the yard, driveway, or finished basement."),
             ("Home buyers", "Pre-purchase sewer camera inspections with video, so you know before you close."),
@@ -279,46 +279,46 @@ def home():
 <section class="hero" style="--hero:url('{IMAGES["hero"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google</p>
   <h1>Trenchless No Dig Sewer Repair in New Jersey</h1>
-  <p class="lead">Fix a broken, root-filled, or collapsing sewer line without digging up your yard, driveway, or basement. Usually done in a day, with camera video before and after.</p>
+  <p class="lead">Sewer line repair for cracked, broken, and root-filled pipe, done without digging up your yard, driveway, or basement. Most jobs take about a day, with camera video before and after.</p>
   <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="/trenchless/">How trenchless repair works</a></div>
   <ul class="trust">{trust}</ul>
 </div></section>
 {cred_bar()}
 
 <section class="sec dark"><div class="wrap">
-  <div class="sec-head"><p class="eyebrow">What we do</p><h2>Trenchless specialists, not general plumbers</h2>
-  <p>No-dig sewer repair is our specialty, backed by high pressure hydro jetting and HD sewer camera inspections.</p></div>
+  <div class="sec-head"><p class="eyebrow">What we do</p><h2>Our services</h2>
+  <p>Trenchless sewer repair, high pressure hydro jetting, and HD sewer camera inspections.</p></div>
   <div class="grid g3 svc-grid">{core}</div>
 </div></section>
 
 <section class="sec alt"><div class="wrap split">
   <div>
     <p class="eyebrow">Why trenchless</p>
-    <h2>The fix happens underground. Your yard stays put.</h2>
-    <p>Traditional sewer replacement means an excavator, a trench from your house to the street, and weeks of restoration. Trenchless repair works through existing cleanouts and small access points instead.</p>
+    <h2>How trenchless repair compares to digging</h2>
+    <p>Traditional sewer replacement involves excavating a trench from the house to the street and restoring the yard, driveway, or floor afterward. Trenchless repair works through existing cleanouts and small access points instead.</p>
     <table class="compare"><thead><tr><th></th><th>Trenchless</th><th>Dig &amp; replace</th></tr></thead><tbody>
       <tr><td>Excavation</td><td>1&ndash;2 small access points</td><td>Full trench</td></tr>
       <tr><td>Typical time</td><td>About a day</td><td>Several days or more</td></tr>
       <tr><td>Lawn, driveway, basement</td><td>Left intact</td><td>Torn up and restored</td></tr>
-      <tr><td>Finished pipe</td><td>Seamless, root-proof</td><td>Jointed pipe</td></tr>
+      <tr><td>Finished pipe</td><td>Seamless, no joints</td><td>Jointed pipe</td></tr>
     </tbody></table>
   </div>
   <div class="stats">
     <div class="stat"><b>1 day</b><span>typical trenchless repair</span></div>
-    <div class="stat"><b>0</b><span>trenches through your yard</span></div>
+    <div class="stat"><b>6</b><span>North Jersey counties served</span></div>
     <div class="stat"><b>50 yr</b><span>design life of a CIPP liner</span></div>
     <div class="stat"><b>{SITE["rating"]}&#9733;</b><span>Google rating</span></div>
   </div>
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-head"><p class="eyebrow">How it works</p><h2>From diagnosis to done, usually in a day</h2></div>
+  <div class="sec-head"><p class="eyebrow">How it works</p><h2>Our process</h2></div>
   <ol class="steps">{steps_html}</ol>
 </div></section>
 
 <section class="sec seg-sec"><div class="wrap">
-  <div class="sec-head"><p class="eyebrow">Who we serve</p><h2>One crew for homes, buildings, and businesses</h2>
-  <p>The same owner-led crew, equipment, and camera documentation on every job, from a single-family lateral to a multi-story soil stack.</p></div>
+  <div class="sec-head"><p class="eyebrow">Who we serve</p><h2>Residential and commercial work</h2>
+  <p>We work on single-family homes, multi-family buildings, and commercial properties, from house laterals to multi-story soil stacks.</p></div>
   <div class="grid g4 seg">{segments}</div>
 </div></section>
 
@@ -329,7 +329,7 @@ def home():
   <div>
     <p class="eyebrow">Local &amp; owner-operated</p>
     <h2>Owner &amp; Licensed Master Plumber Steven Ray on every job site</h2>
-    <p>Ray Rooter Trenchless is a local company based in {SITE["base_town"]}. Steve is the owner and a Licensed Master Plumber with more than 15 years of experience on residential and commercial sewer jobs, and he's on site for every job. You're never handed off to a subcontractor. You get a straight diagnosis, a firm price before we start, and the camera footage to back it up.</p>
+    <p>Ray Rooter Trenchless is a local company based in {SITE["base_town"]}. Steve is the owner and a Licensed Master Plumber with more than 15 years of experience on residential and commercial sewer jobs, and he's on site for every job. The work is done by our own crew, not a subcontractor. Estimates are based on a camera inspection, you get the price before work starts, and you receive a copy of the footage.</p>
     <p>We serve homeowners, home buyers, landlords, and commercial properties including restaurants, offices, and multi-family buildings.</p>
     <p class="chips">{areas}</p>
     <a class="btn btn-outline" href="/about-us/">About us</a>
@@ -384,11 +384,11 @@ def city_page(c):
               ("h2", f"Trenchless services in {c['city']}"),
               ("ul", ["Trenchless sewer line repair and pipelining (CIPP)", "High pressure hydro jetting and root removal",
                       "Sewer camera inspections, including pre-purchase inspections", "Trenchless water line replacement"]),
-              ("h2", "Why homeowners choose trenchless"),
+              ("h2", "Benefits of trenchless repair"),
               ("ul", ["No trench through your yard, driveway, or basement", "Usually completed in a day",
-                      "Owner and Licensed Master Plumber Steven Ray on every job site", "Seamless, root-proof pipe designed to last 50 years", "Camera video before and after the work"])]
+                      "Owner and Licensed Master Plumber Steven Ray on every job site", "Seamless liner with no joints, designed to last 50 years", "Camera video before and after the work"])]
     title = f"Trenchless Sewer Repair in {c['city']}"
-    body = page_hero(title, "Fix roots, cracks, and collapsed pipe without excavating.", '<a href="/services/">Services</a>') + f'''
+    body = page_hero(title, "Sewer line repair for roots, cracks, and broken pipe, usually without excavating.", '<a href="/services/">Services</a>') + f'''
 <section class="sec"><div class="wrap content-grid"><article class="prose">{render_body(blocks)}</article>{aside()}</div></section>
 {reviews_block(3)}'''
     return layout(c["path"], c["seo_title"], c["desc"], body, "/services/")
@@ -422,7 +422,7 @@ def trenchless_page():
                   "areaServed": ["Northern New Jersey"]}
     svc_schema["provider"] = {"@id": BIZ_ID}
     head = f'<script type="application/ld+json">{json.dumps(faq_schema)}</script><script type="application/ld+json">{json.dumps(svc_schema)}</script>'
-    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging at all", "Owner &amp; Licensed Master Plumber on every job site", "Usually done in a day", "Free estimates"])
+    trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging in most cases", "Owner &amp; Licensed Master Plumber on every job site", "Usually done in a day", "Free estimates"])
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["basement_rig"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google &middot; {SITE["review_count"]} reviews</p>
@@ -438,33 +438,33 @@ def trenchless_page():
     <p class="eyebrow">Is your sewer line failing?</p>
     <h2>Signs you need sewer line repair</h2>
     <ul class="checks">{signs}</ul>
-    <p>Not sure? A <a href="/services/sewer-line-camera/">sewer camera inspection</a> shows exactly what's wrong before anyone quotes you a repair.</p>
+    <p>Not sure? A <a href="/services/sewer-line-camera/">sewer camera inspection</a> shows the condition of the line before you decide on a repair.</p>
   </div>
   <div class="photo"><img src="{IMAGES["street_job"]}" alt="Ray Rooter crew on a trenchless sewer repair job" loading="lazy"></div>
 </div></section>
 
 <section class="sec dark"><div class="wrap">
   <div class="sec-head"><p class="eyebrow">How no-dig repair works</p><h2>A new pipe inside the old one, usually in a day</h2>
-  <p>Cured-in-place pipe (CIPP) lining creates a seamless, root-proof pipe inside your existing sewer line, installed through a cleanout instead of a trench.</p></div>
+  <p>Cured-in-place pipe (CIPP) lining creates a seamless pipe inside your existing sewer line, installed through a cleanout instead of a trench.</p></div>
   <ol class="steps steps-dark">{steps_html}</ol>
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-head"><p class="eyebrow">No digging at all</p><h2>We line your sewer through the openings you already have</h2>
-  <p>The lining machine connects to the pipe at an existing cleanout, the toilet flange, a floor drain, or the manhole. Inside the house, floors are covered. Outside, nothing gets excavated, and your yard and driveway are never touched.</p></div>
+  <div class="sec-head"><p class="eyebrow">Access points</p><h2>Where the liner is installed</h2>
+  <p>The lining machine connects to the pipe at an existing cleanout, the toilet flange, a floor drain, or a manhole. Inside the house, floors are covered. Outside, no excavation is needed in most cases.</p></div>
   <div class="grid g3 inside-grid">{inside_html}</div>
   <p class="center"><a href="/gallery/">See more job photos</a></p>
 </div></section>
 
 <section class="sec alt"><div class="wrap split">
   <div>
-    <p class="eyebrow">Trenchless vs. digging</p>
-    <h2>Keep your yard, driveway, and basement floor</h2>
+    <p class="eyebrow">Comparison</p>
+    <h2>Trenchless vs. digging</h2>
     <table class="compare"><thead><tr><th></th><th>Trenchless</th><th>Dig &amp; replace</th></tr></thead><tbody>
-      <tr><td>Excavation</td><td>None: cleanout or toilet flange</td><td>Full trench</td></tr>
+      <tr><td>Excavation</td><td>Usually none: cleanout or toilet flange</td><td>Full trench</td></tr>
       <tr><td>Typical time</td><td>About a day</td><td>Several days or more</td></tr>
       <tr><td>Lawn, driveway, basement</td><td>Left intact</td><td>Torn up and restored</td></tr>
-      <tr><td>Finished pipe</td><td>Seamless, root-proof</td><td>Jointed pipe</td></tr>
+      <tr><td>Finished pipe</td><td>Seamless, no joints</td><td>Jointed pipe</td></tr>
       <tr><td>Street permits &amp; police detail</td><td>Usually avoided</td><td>Often required</td></tr>
     </tbody></table>
   </div>
@@ -475,7 +475,7 @@ def trenchless_page():
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-head"><p class="eyebrow">Reviews</p><h2>Homeowners who skipped the excavator</h2></div>
+  <div class="sec-head"><p class="eyebrow">Reviews</p><h2>Customer reviews</h2></div>
   {rating_summary()}
   <div class="masonry">{revs}</div>
   <p class="center"><a class="btn btn-primary" href="/clients-one/">Read more reviews</a></p>
@@ -487,25 +487,25 @@ def trenchless_page():
 </div></section>
 
 <section class="sec dark"><div class="wrap">
-  <div class="sec-head"><h2>Related services</h2><p>Every trenchless job starts with a camera and a clean pipe.</p></div>
+  <div class="sec-head"><h2>Related services</h2><p>Camera inspection and hydro jetting are part of every lining job.</p></div>
   <div class="grid g3 svc-grid">{"".join(service_card(s) for s in SERVICES[1:4])}</div>
 </div></section>
 '''
     return layout("/trenchless/", T["seo_title"], T["desc"], body, "/trenchless/", extra_head=head)
 
 def about():
-    body = page_hero("About Ray Rooter Trenchless", "Local, licensed, and focused on sewer and water lines.") + f'''
+    body = page_hero("About Ray Rooter Trenchless", "A licensed sewer and water line contractor based in Midland Park, NJ.") + f'''
 <section class="sec"><div class="wrap split">
   <div class="prose">
-    <p>Ray Rooter Trenchless specializes in one thing: fixing sewer and water lines without digging up your property. Owner Steven Ray, a Licensed Master Plumber with more than 15 years of experience on residential and commercial jobs, is on every job site. Our crew uses trenchless pipelining, high pressure hydro jetting, and HD sewer cameras to find the problem and fix it right the first time.</p>
-    <p>Because we focus on trenchless work, we bring the right equipment to every job and give you a straight answer and a firm price before we start. We are local, licensed, insured, and we stand behind our work.</p>
+    <p>Ray Rooter Trenchless repairs and replaces sewer and water lines using trenchless methods, along with high pressure hydro jetting and HD sewer camera inspections. Owner Steven Ray, a Licensed Master Plumber with more than 15 years of experience on residential and commercial jobs, is on every job site.</p>
+    <p>Estimates are based on a camera inspection, and you get the price before any work starts. We are licensed and insured.</p>
     <ul class="checks"><li>Owner &amp; Licensed Master Plumber on every job site</li><li>Licensed &amp; insured</li><li>Free estimates</li><li>Camera footage before and after</li><li>Locally owned and operated in {SITE["base_town"]}</li></ul>
   </div>
   <div class="photo"><img src="{IMAGES["trailer_2"]}" alt="Ray Rooter pipe lining trailer in a residential driveway" loading="lazy"></div>
 </div></section>
 {reviews_block(3)}'''
-    return layout("/about-us/", "About Ray Rooter Trenchless | North NJ Sewer Line Specialists",
-                  "Licensed, insured trenchless sewer and water line specialists. Owner and Licensed Master Plumber Steven Ray is on every job. Based in Midland Park, NJ.", body, "/about-us/")
+    return layout("/about-us/", "About Ray Rooter Trenchless | Sewer & Water Line Contractor in North NJ",
+                  "Licensed, insured trenchless sewer and water line contractor. Owner and Licensed Master Plumber Steven Ray is on every job. Based in Midland Park, NJ.", body, "/about-us/")
 
 def contact(path):
     body = page_hero("Get a Free Estimate", "The fastest way to reach us is a call or text.") + f'''
@@ -517,7 +517,7 @@ def contact(path):
 <div class="wrap prose narrow">
   <h2>What to include</h2>
   <ul class="checks"><li>Your town and the property type (house, multi-family, commercial)</li><li>What's happening: backups, slow drains, low water pressure, wet spots</li><li>Whether you're buying the home and need a pre-purchase inspection</li></ul>
-  <p><strong>{SITE["hours"]}.</strong> Serving Bergen, Hudson, Essex, Morris, and Passaic County from {SITE["base_town"]}.</p>
+  <p><strong>{SITE["hours"]}.</strong> Serving {SITE["area_line"]} from {SITE["base_town"]}.</p>
 </div></section>'''
     return layout(path, "Contact Ray Rooter Trenchless | Free Sewer Line Estimate",
                   f"Call {SITE['phone']} for a free estimate on trenchless sewer repair, hydro jetting, or sewer camera inspection. {SITE['hours']}.", body, "/contact-us/", canonical="/contact-us/")

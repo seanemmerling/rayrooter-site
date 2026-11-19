@@ -192,9 +192,9 @@ def layout(path, title, desc, body, active="/", canonical=None, extra_head="", h
     <li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li>
     <li>{SITE['hours']}</li>
     <li>Based in {SITE['base_town']}</li>
-  </ul></div>
+  </ul><a class="btn btn-primary foot-cta" href="{SITE['phone_href']}">Request an estimate</a></div>
 </div>
-<div class="wrap legal">&copy; Ray Rooter Trenchless. All rights reserved.</div>
+<div class="wrap legal"><span>&copy; {datetime.date.today().year} Ray Rooter Trenchless. All rights reserved.</span><span>230 Rock St #2, Midland Park, NJ 07432 &middot; Licensed &amp; insured</span></div>
 </footer>
 <script>
 (function(){{var b=document.querySelector('.menu-toggle'),n=document.getElementById('site-nav');
@@ -250,15 +250,31 @@ def reviews_block(limit=3, heading=True):
 <p class="center"><a class="btn btn-primary" href="/clients-one/">Read more reviews</a></p>
 </div></section>'''
 
+def cred_bar():
+    items = [("Licensed Master Plumber", "Owner on every job site"),
+             ("Licensed &amp; insured", "Residential &amp; commercial"),
+             (f'{SITE["rating"]} on Google', f'{SITE["review_count"]} verified reviews'),
+             ("Camera-verified work", "Video before and after")]
+    cells = "".join(f'<li><b>{t}</b><span>{d}</span></li>' for t, d in items)
+    return f'<section class="cred" aria-label="Credentials"><ul class="wrap cred-grid">{cells}</ul></section>'
+
+def num(n):
+    return f"{int(n):02d}"
+
 def home():
     trust = "".join(f'<li>{icon("check")}<span>{t}</span></li>' for t in ["No digging up your yard", "Owner &amp; Licensed Master Plumber on every job site", "Free estimates", "Licensed &amp; insured"])
     steps = [("1", "Camera inspection", "We run an HD camera through the line and show you exactly what's wrong."),
              ("2", "Clean the line", "High pressure hydro jetting clears roots, grease, and scale."),
              ("3", "Fix it without digging", "We reline or replace the pipe from small access points, usually in a day."),
              ("4", "Show you the result", "A final camera run confirms the fix. You get the video.")]
-    steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
+    steps_html = "".join(f'<li class="step"><span class="num">{num(n)}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
     core = "".join(service_card(s) for s in SERVICES[:5]) + f'''<a class="card svc svc-cta" href="/services/sewer-line-camera/"><span class="svc-ic">{icon("phone")}</span><h3>Not sure what you need?</h3><p>Start with a sewer camera inspection. We'll show you exactly what's going on before quoting anything.</p><span class="more">Book a camera inspection &rarr;</span></a>'''
     areas = "".join(f'<a class="chip" href="/service-areas/{c["slug"]}/">{e(c["name"])}</a>' for c in COUNTIES) + "".join(f'<a class="chip" href="{c["path"]}">{e(c["city"])}</a>' for c in CITIES if c["city"] in ("Montclair, NJ", "Nutley, NJ"))
+    segs = [("Homeowners", "Sewer and water lines repaired without tearing up the yard, driveway, or finished basement."),
+            ("Home buyers", "Pre-purchase sewer camera inspections with video, so you know before you close."),
+            ("Landlords &amp; property managers", "Multi-family laterals, soil stacks, and roof drains lined with minimal disruption to tenants."),
+            ("Commercial properties", "Restaurants, offices, and commercial buildings, including manhole and parking lot work.")]
+    segments = "".join(f'<div class="seg-card"><h3>{t}</h3><p>{d}</p></div>' for t, d in segs)
     body = f'''
 <section class="hero" style="--hero:url('{IMAGES["hero"]}')"><div class="wrap hero-inner">
   <p class="eyebrow light">{stars()} Rated {SITE["rating"]} on Google</p>
@@ -267,6 +283,7 @@ def home():
   <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="/trenchless/">How trenchless repair works</a></div>
   <ul class="trust">{trust}</ul>
 </div></section>
+{cred_bar()}
 
 <section class="sec dark"><div class="wrap">
   <div class="sec-head"><p class="eyebrow">What we do</p><h2>Trenchless specialists, not general plumbers</h2>
@@ -297,6 +314,12 @@ def home():
 <section class="sec"><div class="wrap">
   <div class="sec-head"><p class="eyebrow">How it works</p><h2>From diagnosis to done, usually in a day</h2></div>
   <ol class="steps">{steps_html}</ol>
+</div></section>
+
+<section class="sec seg-sec"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">Who we serve</p><h2>One crew for homes, buildings, and businesses</h2>
+  <p>The same owner-led crew, equipment, and camera documentation on every job, from a single-family lateral to a multi-story soil stack.</p></div>
+  <div class="grid g4 seg">{segments}</div>
 </div></section>
 
 {reviews_block(3)}
@@ -391,7 +414,7 @@ def trenchless_page():
              ("3", "Install the liner", "A resin liner goes in through a cleanout or the toilet flange and cures into a new pipe inside the old one."),
              ("4", "Camera it again", "We run the camera through the finished pipe so you can see the result.")]
     inside_html = "".join(f'<figure class="inside"><img src="{u}" alt="{e(a)}" loading="lazy"><figcaption>{e(cap)}</figcaption></figure>' for u, a, cap in IMAGES["inside"])
-    steps_html = "".join(f'<li class="step"><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
+    steps_html = "".join(f'<li class="step"><span class="num">{num(n)}</span><h3>{t}</h3><p>{d}</p></li>' for n, t, d in steps)
     faq_schema = {"@context": "https://schema.org", "@type": "FAQPage",
                   "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in T["faq"]]}
     svc_schema = {"@context": "https://schema.org", "@type": "Service", "serviceType": "Trenchless sewer repair",
@@ -408,6 +431,7 @@ def trenchless_page():
   <div class="hero-actions">{call_btn("btn btn-primary", "Free estimate: " + SITE["phone"])}<a class="btn btn-ghost-light" href="{SITE["sms_href"]}">{icon("sms")}<span>Text us photos</span></a></div>
   <ul class="trust">{trust}</ul>
 </div></section>
+{cred_bar()}
 
 <section class="sec"><div class="wrap split">
   <div class="prose">
